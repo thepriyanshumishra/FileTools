@@ -1,5 +1,6 @@
 import { FileWithPreview } from "@/lib/store/conversion";
 import { validateFileSize, validateFileType, formatFileSize } from "./file-validation";
+import { getRecommendedMaxFileSize } from "./browser-detection";
 
 type ConversionOptions = {
   outputFormat: string;
@@ -113,6 +114,12 @@ export function validateFile(file: File, allowedExtensions?: string[]): string |
   const sizeValidation = validateFileSize(file);
   if (!sizeValidation.valid) {
     return sizeValidation.error || "File size exceeds limit";
+  }
+
+  // Check device-specific limits
+  const maxSize = getRecommendedMaxFileSize();
+  if (file.size > maxSize) {
+    return `File too large for your device. Maximum recommended: ${formatFileSize(maxSize)}`;
   }
 
   if (allowedExtensions) {

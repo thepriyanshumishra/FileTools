@@ -1,9 +1,14 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { shouldDisableFFmpeg } from './browser-detection';
 
 let ffmpeg: FFmpeg | null = null;
 
 export async function loadFFmpeg(): Promise<FFmpeg> {
+  if (shouldDisableFFmpeg()) {
+    throw new Error('FFmpeg is disabled on this device. Please use a desktop browser for video/audio processing.');
+  }
+  
   if (ffmpeg) return ffmpeg;
   
   ffmpeg = new FFmpeg();

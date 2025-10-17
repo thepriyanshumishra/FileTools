@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
+import { BrowserWarning } from "@/components/ui/browser-warning";
 import { HistoryPanel } from "@/components/ui/history-panel";
 import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 import { SettingsPanel } from "@/components/ui/settings-panel";
@@ -33,6 +34,7 @@ export default function RootLayout({
         <div className="fixed inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none dark:opacity-[0.03]" />
         <Providers>
           <Header />
+          <BrowserWarning />
           <div className="min-h-screen">{children}</div>
           <Footer />
 
