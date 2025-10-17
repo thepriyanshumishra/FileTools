@@ -10,6 +10,7 @@ import { MaintenanceMode } from "@/components/ui/maintenance-mode";
 import { HistoryPanel } from "@/components/ui/history-panel";
 import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 import { SettingsPanel } from "@/components/ui/settings-panel";
+import { PWAInstall } from "@/components/pwa-install";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -20,6 +21,21 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "FileTools - Your Online File Utilities",
   description: "Free online tools for converting, compressing, and managing your files",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "FileTools",
+  },
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+  },
 };
 
 // Note: Metadata is static, dynamic title/description would need middleware
@@ -31,6 +47,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="theme-color" content="#8b5cf6" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      </head>
       <body
         className={`${inter.className} min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100`}
       >
@@ -45,6 +67,7 @@ export default function RootLayout({
           <HistoryPanel />
           <SettingsPanel />
           <ShortcutsModal />
+          <PWAInstall />
           <SpeedInsights />
           <Analytics />
         </Providers>
