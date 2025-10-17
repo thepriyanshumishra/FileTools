@@ -1,4 +1,3 @@
-import { FileWithPreview } from "@/lib/store/conversion";
 import { validateFileSize, validateFileType, formatFileSize } from "./file-validation";
 import { getRecommendedMaxFileSize } from "./browser-detection";
 
@@ -28,7 +27,7 @@ export function getFileExtension(file: File): string {
 }
 
 export async function convertFile(
-  file: FileWithPreview,
+  file: File,
   options: ConversionOptions
 ): Promise<Blob> {
   const { outputFormat, onProgress } = options;

@@ -3,21 +3,20 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useSettingsStore } from "@/lib/store/settings";
 
 export function SettingsPanel() {
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    autoDownload,
-    defaultQuality,
-    showFileSize,
-    compressionLevel,
-    setAutoDownload,
-    setDefaultQuality,
-    setShowFileSize,
-    setCompressionLevel,
-    resetSettings,
-  } = useSettingsStore();
+  const [autoDownload, setAutoDownload] = useState(true);
+  const [defaultQuality, setDefaultQuality] = useState<"low" | "medium" | "high">("high");
+  const [showFileSize, setShowFileSize] = useState(true);
+  const [compressionLevel, setCompressionLevel] = useState(7);
+  
+  const resetSettings = () => {
+    setAutoDownload(true);
+    setDefaultQuality("high");
+    setShowFileSize(true);
+    setCompressionLevel(7);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

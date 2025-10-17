@@ -12,7 +12,12 @@ import { fileCategories } from "@/lib/utils/file-types";
 import { cn } from "@/lib/utils";
 import { ProgressBar } from "@/components/ui/loading";
 import { validateFile } from "@/lib/utils/file-conversion";
-import { FileWithPreview } from "@/lib/store/conversion";
+
+interface FileWithPreview extends File {
+  preview?: string;
+  progress?: number;
+  status?: "pending" | "processing" | "success" | "error";
+}
 import { processTool, downloadBlob } from "@/lib/utils/tool-processor";
 import { getToolInstructions } from "@/lib/utils/tool-instructions";
 import { ToastContainer } from "@/components/ui/toast";
