@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         <Providers>
           <main className="container mx-auto px-4 py-8">{children}</main>
           <ThemeToggle className="fixed bottom-8 right-8" />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
