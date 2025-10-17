@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 export function MaintenanceMode() {
   const { maintenanceMode, maintenanceMessage } = useAdminSettings();
   const [mounted, setMounted] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    // Check if current path is admin
+    setIsAdmin(window.location.pathname.startsWith('/admin'));
   }, []);
 
-  if (!mounted || !maintenanceMode) return null;
+  if (!mounted || !maintenanceMode || isAdmin) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] bg-zinc-900 flex items-center justify-center p-4">
