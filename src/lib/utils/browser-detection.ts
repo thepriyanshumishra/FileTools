@@ -17,7 +17,7 @@ export function isMobile(): boolean {
 
 export function getDeviceMemory(): number {
   if (typeof window === 'undefined') return 4;
-  // @ts-ignore - navigator.deviceMemory is experimental
+  // @ts-expect-error - navigator.deviceMemory is experimental
   return navigator.deviceMemory || 4;
 }
 
