@@ -3,6 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Header } from "@/components/ui/header";
+import { Footer } from "@/components/ui/footer";
+import { HistoryPanel } from "@/components/ui/history-panel";
+import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
@@ -23,12 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased`}
+        className={`${inter.className} min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100`}
       >
-        <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
+        <div className="fixed inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none dark:opacity-[0.03]" />
         <Providers>
-          <main className="container mx-auto px-4 py-8">{children}</main>
+          <Header />
+          <div className="min-h-screen">{children}</div>
+          <Footer />
           <ThemeToggle className="fixed bottom-8 right-8" />
+          <HistoryPanel />
+          <ShortcutsModal />
           <SpeedInsights />
         </Providers>
       </body>

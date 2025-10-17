@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -23,21 +28,21 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
 
-    --ring: 215 20.2% 65.1%;
+    --ring: 240 4.9% 83.9%;
   }
 }
 
@@ -45,32 +50,53 @@
   .glass {
     background: linear-gradient(
       135deg,
-      hsl(var(--background) / 0.8),
-      hsl(var(--background) / 0.6)
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.7)
     );
     backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.2);
-    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1),
-      0 4px 8px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.1),
+      0 4px 16px -2px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark .glass {
+    background: linear-gradient(
+      135deg,
+      rgba(24, 24, 27, 0.9),
+      rgba(24, 24, 27, 0.7)
+    );
+    border: 1px solid rgba(63, 63, 70, 0.3);
+    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.3),
+      0 4px 16px -2px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   }
 
   .glass:hover {
     background: linear-gradient(
       135deg,
-      hsl(var(--background) / 0.95),
-      hsl(var(--background) / 0.85)
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.85)
     );
     backdrop-filter: blur(30px);
-    box-shadow: 0 20px 40px -8px rgba(139, 92, 246, 0.3),
-      0 8px 16px -4px rgba(139, 92, 246, 0.2);
-    border-color: hsl(var(--border) / 0.4);
+    box-shadow: 0 20px 60px -8px rgba(139, 92, 246, 0.3),
+      0 8px 32px -4px rgba(139, 92, 246, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+    border-color: rgba(139, 92, 246, 0.3);
     transform: translateY(-4px) scale(1.02);
   }
 
   .dark .glass:hover {
-    box-shadow: 0 20px 40px -8px rgba(168, 85, 247, 0.25),
-      0 8px 16px -4px rgba(168, 85, 247, 0.15);
+    background: linear-gradient(
+      135deg,
+      rgba(24, 24, 27, 0.95),
+      rgba(24, 24, 27, 0.85)
+    );
+    box-shadow: 0 20px 60px -8px rgba(168, 85, 247, 0.4),
+      0 8px 32px -4px rgba(168, 85, 247, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(168, 85, 247, 0.4);
   }
 
   .glass-active:active {
@@ -384,5 +410,75 @@
       hsl(var(--background) / 0.9),
       hsl(var(--muted) / 0.9)
     );
+  }
+
+  .kbd {
+    @apply inline-flex items-center rounded border border-zinc-300 bg-zinc-100 px-1.5 py-0.5 text-xs font-semibold text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300;
+  }
+}
+
+@layer utilities {
+  @keyframes blob {
+    0%, 100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+
+  @keyframes gradient {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animate-gradient {
+    animation: gradient 3s ease-in-out infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Text overflow prevention */
+  .text-wrap {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .text-ellipsis-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-ellipsis-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
