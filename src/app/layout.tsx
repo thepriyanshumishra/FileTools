@@ -20,9 +20,48 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FileTools - Your Online File Utilities",
-  description: "Free online tools for converting, compressing, and managing your files",
+  title: "FileTools - Free Online File Converter & Compressor | PDF, Image, Video Tools",
+  description: "Convert, compress, and edit files instantly in your browser. 150+ free tools for PDF, images, videos, audio, and documents. No upload, 100% secure, works offline.",
+  keywords: ["file converter", "pdf tools", "image compressor", "video converter", "online tools", "free converter", "pdf merge", "image resize", "compress pdf"],
+  authors: [{ name: "FileTools" }],
+  creator: "FileTools",
+  publisher: "FileTools",
   manifest: "/manifest.json",
+  metadataBase: new URL('https://filetools.vercel.app'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: '/',
+    title: 'FileTools - Free Online File Utilities',
+    description: 'Convert, compress, and edit files instantly. 150+ free tools for PDF, images, videos, and more.',
+    siteName: 'FileTools',
+    images: [{
+      url: '/icon-512.png',
+      width: 512,
+      height: 512,
+      alt: 'FileTools Logo',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FileTools - Free Online File Utilities',
+    description: 'Convert, compress, and edit files instantly. 150+ free tools.',
+    images: ['/icon-512.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -53,6 +92,26 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebApplication',
+              name: 'FileTools',
+              description: 'Free online tools for converting, compressing, and managing files',
+              url: 'https://filetools.vercel.app',
+              applicationCategory: 'UtilitiesApplication',
+              operatingSystem: 'Any',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
+              },
+              featureList: 'PDF tools, Image converter, Video compressor, Audio editor, Document converter',
+            }),
+          }}
+        />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100`}

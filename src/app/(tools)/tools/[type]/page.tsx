@@ -284,6 +284,16 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
     }
   };
 
+  useEffect(() => {
+    if (fileType) {
+      document.title = `${fileType.name} Tools - Free Online ${fileType.name} Converter | FileTools`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', `${fileType.description}. Free online ${fileType.name} tools. Process files instantly in your browser.`);
+      }
+    }
+  }, [fileType]);
+
   return (
     <main className="container mx-auto px-4 py-8 min-h-screen">
       <Link
