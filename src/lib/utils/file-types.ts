@@ -253,7 +253,7 @@ export const fileCategories: FileCategory[] = [
             description: "Convert CSV to JSON format",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Validate CSV",
@@ -277,28 +277,28 @@ export const fileCategories: FileCategory[] = [
             description: "Prettify and format JSON",
             isOffline: true,
             icon: "format",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Minify JSON",
             description: "Compress JSON file",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Validate JSON",
             description: "Check JSON syntax",
             isOffline: true,
             icon: "check",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Convert to CSV",
             description: "Convert JSON to CSV",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -315,14 +315,14 @@ export const fileCategories: FileCategory[] = [
             description: "Prettify and format XML",
             isOffline: true,
             icon: "format",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Validate XML",
             description: "Check XML syntax",
             isOffline: true,
             icon: "check",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Convert to JSON",
@@ -1265,14 +1265,14 @@ export const fileCategories: FileCategory[] = [
             description: "Format and prettify code",
             isOffline: true,
             icon: "format",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Minify",
             description: "Minify and compress code",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Lint",
@@ -1478,21 +1478,21 @@ export const fileCategories: FileCategory[] = [
             description: "Extract ZIP contents",
             isOffline: true,
             icon: "extract",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Create ZIP",
             description: "Create ZIP archive",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "View Contents",
             description: "List files in archive",
             isOffline: true,
             icon: "view",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },

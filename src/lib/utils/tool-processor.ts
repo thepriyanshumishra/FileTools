@@ -2,6 +2,8 @@ import * as imageTools from './image-tools';
 import * as pdfTools from './pdf-tools';
 import * as videoTools from './video-tools';
 import * as audioTools from './audio-tools';
+import * as documentTools from './document-tools';
+import * as archiveTools from './archive-tools';
 import { validateFileSize, validateMultipleFiles } from './file-validation';
 
 export interface ToolOptions {
@@ -45,7 +47,7 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   if (toolName === 'Resize') {
     return await imageTools.resizeImage(file, (params.width as number) || 800, (params.height as number) || 600);
   }
-  if (toolName === 'Convert Format') {
+  if (toolName === 'Convert Format' && file.type.startsWith('image/')) {
     return await imageTools.convertImageFormat(file, (params.format as string) || 'png');
   }
   if (toolName === 'Rotate') {
@@ -113,6 +115,69 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   }
   if (toolName === 'Add Fade') {
     return await audioTools.addFadeEffect(file, (params.fadeIn as number) || 2, (params.fadeOut as number) || 2);
+  }
+  if (toolName === 'Convert Format' && file.type.startsWith('audio/')) {
+    return await audioTools.convertAudioFormat(file, (params.format as string) || 'mp3');
+  }
+
+  // Document Tools
+  if (toolName === 'Format JSON') {
+    return await documentTools.formatJSON(file);
+  }
+  if (toolName === 'Minify JSON') {
+    return await documentTools.minifyJSON(file);
+  }
+  if (toolName === 'Validate JSON') {
+    const result = await documentTools.validateJSON(file);
+    if (!result.valid) throw new Error(result.error);
+    return new Blob(['Valid JSON'], { type: 'text/plain' });
+  }
+  if (toolName === 'Convert to CSV' && file.type === 'application/json') {
+    return await documentTools.jsonToCSV(file);
+  }
+  if (toolName === 'Convert to JSON' && file.name.endsWith('.csv')) {
+    return await documentTools.csvToJSON(file);
+  }
+  if (toolName === 'Format XML') {
+    return await documentTools.formatXML(file);
+  }
+  if (toolName === 'Validate XML') {
+    const result = await documentTools.validateXML(file);
+    if (!result.valid) throw new Error(result.error);
+    return new Blob(['Valid XML'], { type: 'text/plain' });
+  }
+  if (toolName === 'Format Code' && file.name.endsWith('.css')) {
+    return await documentTools.formatCSS(file);
+  }
+  if (toolName === 'Minify' && file.name.endsWith('.css')) {
+    return await documentTools.minifyCSS(file);
+  }
+  if (toolName === 'Format Code' && file.name.endsWith('.html')) {
+    return await documentTools.formatHTML(file);
+  }
+  if (toolName === 'Minify' && file.name.endsWith('.html')) {
+    return await documentTools.minifyHTML(file);
+  }
+  if (toolName === 'Format Code' && file.name.endsWith('.js')) {
+    return await documentTools.formatJS(file);
+  }
+  if (toolName === 'Minify' && file.name.endsWith('.js')) {
+    return await documentTools.minifyJS(file);
+  }
+
+  // Archive Tools
+  if (toolName === 'Create ZIP') {
+    return await archiveTools.createZIP(files);
+  }
+  if (toolName === 'Extract') {
+    const extractedFiles = await archiveTools.extractZIP(file);
+    // Return first file or create a zip of all
+    if (extractedFiles.length === 1) return extractedFiles[0];
+    return await archiveTools.createZIP(extractedFiles);
+  }
+  if (toolName === 'View Contents') {
+    const contents = await archiveTools.viewZIPContents(file);
+    return new Blob([contents.join('\n')], { type: 'text/plain' });
   }
 
   throw new Error(`Tool "${toolName}" is not implemented yet`);
