@@ -194,6 +194,24 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
 
   const handleProcess = async () => {
     if (!selectedTool || files.length === 0) return;
+    
+    // Check if tool is disabled in admin settings
+    if (typeof window !== 'undefined') {
+      try {
+        const settings = localStorage.getItem('admin-settings');
+        if (settings) {
+          const parsed = JSON.parse(settings);
+          const toolId = `${type}-${selectedTool}`;
+          if (parsed.state?.enabledTools?.[toolId] === false) {
+            addToast('This tool is currently disabled by administrator', 'error');
+            return;
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    
     setProcessing(true);
     
     // Set all files to processing state

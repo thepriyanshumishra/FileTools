@@ -6,6 +6,7 @@ import { Providers } from "@/components/providers";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { BrowserWarning } from "@/components/ui/browser-warning";
+import { MaintenanceMode } from "@/components/ui/maintenance-mode";
 import { HistoryPanel } from "@/components/ui/history-panel";
 import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 import { SettingsPanel } from "@/components/ui/settings-panel";
@@ -17,9 +18,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "FileTools - Your Online File Utilities",
-  description:
-    "Free online tools for converting, compressing, and managing your files",
+  description: "Free online tools for converting, compressing, and managing your files",
 };
+
+// Note: Metadata is static, dynamic title/description would need middleware
 
 export default function RootLayout({
   children,
@@ -33,6 +35,7 @@ export default function RootLayout({
       >
         <div className="fixed inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none dark:opacity-[0.03]" />
         <Providers>
+          <MaintenanceMode />
           <Header />
           <BrowserWarning />
           <div className="min-h-screen">{children}</div>

@@ -1,6 +1,7 @@
 import { FileWithPreview } from "@/lib/store/conversion";
 import { validateFileSize, validateFileType, formatFileSize } from "./file-validation";
 import { getRecommendedMaxFileSize } from "./browser-detection";
+import { useAdminSettings } from "../store/admin-settings";
 
 type ConversionOptions = {
   outputFormat: string;
@@ -117,9 +118,27 @@ export function validateFile(file: File, allowedExtensions?: string[]): string |
   }
 
   // Check device-specific limits
-  const maxSize = getRecommendedMaxFileSize();
+  const deviceMaxSize = getRecommendedMaxFileSize();
+  
+  // Check admin-configured max size (convert MB to bytes)
+  let adminMaxSize = 500 * 1024 * 1024; // default 500MB
+  if (typeof window !== 'undefined') {
+    try {
+      const settings = localStorage.getItem('admin-settings');
+      if (settings) {
+        const parsed = JSON.parse(settings);
+        if (parsed.state?.maxFileSize) {
+          adminMaxSize = parsed.state.maxFileSize * 1024 * 1024;
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+  
+  const maxSize = Math.min(deviceMaxSize, adminMaxSize);
   if (file.size > maxSize) {
-    return `File too large for your device. Maximum recommended: ${formatFileSize(maxSize)}`;
+    return `File too large. Maximum allowed: ${formatFileSize(maxSize)}`;
   }
 
   if (allowedExtensions) {
