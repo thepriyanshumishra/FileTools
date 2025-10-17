@@ -87,7 +87,8 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
             
             await page.render({ 
               canvasContext: context, 
-              viewport: viewport 
+              viewport: viewport,
+              canvas: canvas
             }).promise;
             
             setPdfPreviews(prev => ({ ...prev, [file.name]: canvas.toDataURL() }));
@@ -376,10 +377,8 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
               )}
             </AnimatePresence>
 
-            <motion.div
+            <div
               {...getRootProps()}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               className={cn(
                 "glass border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all",
                 isDragActive
@@ -412,7 +411,7 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
                   </p>
                 </>
               )}
-            </motion.div>
+            </div>
           </motion.div>
 
           {files.length > 0 && (

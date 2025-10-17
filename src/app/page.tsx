@@ -11,8 +11,7 @@ import {
   ShieldCheckIcon, 
   CloudArrowUpIcon,
   SparklesIcon,
-  RocketLaunchIcon,
-  LockClosedIcon
+  RocketLaunchIcon
 } from "@heroicons/react/24/outline";
 
 export default function HomePage() {
@@ -334,7 +333,7 @@ export default function HomePage() {
                   <span key={i} className="text-yellow-500">★</span>
                 ))}
               </div>
-              <p className="mb-4 text-zinc-600 dark:text-zinc-400 break-words">"{testimonial.text}"</p>
+              <p className="mb-4 text-zinc-600 dark:text-zinc-400 break-words">&ldquo;{testimonial.text}&rdquo;</p>
               <div>
                 <p className="font-semibold break-words">{testimonial.name}</p>
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 break-words">{testimonial.role}</p>
