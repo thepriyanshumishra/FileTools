@@ -40,6 +40,7 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
   const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: "success" | "error" }>>([]);
   const [showInstructions, setShowInstructions] = useState(false);
   const [toolOptions, setToolOptions] = useState<Record<string, string | number | boolean>>({});
+  const [showSuccess, setShowSuccess] = useState(false);
   const { toggleFavorite, isFavorite } = useFavoritesStore();
   const { addToHistory } = useHistoryStore();
 
@@ -233,11 +234,8 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
       
       addToast('Processing complete! File(s) downloaded.', 'success');
       
-      // Clear after a short delay to show success state
-      setTimeout(() => {
-        setFiles([]);
-        setOutputFilename('');
-      }, 1500);
+      // Show success page
+      setShowSuccess(true);
     } catch (error) {
       console.error('Processing error:', error);
       setFiles(prev => prev.map(f => ({ ...f, status: 'error' as const })));
@@ -268,7 +266,50 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
         </p>
       </motion.div>
 
-      {!selectedTool ? (
+      {showSuccess ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          <div className="glass rounded-2xl p-12">
+            <div className="mb-6">
+              <div className="mx-auto w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                <span className="text-4xl">✓</span>
+              </div>
+              <h2 className="text-3xl font-bold mb-2">Download Complete!</h2>
+              <p className="text-zinc-600 dark:text-zinc-400">
+                Your file has been processed and downloaded successfully.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => {
+                  setShowSuccess(false);
+                  setFiles([]);
+                  setOutputFilename('');
+                }}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+              >
+                {selectedTool?.includes('Merge') ? `Merge More ${fileType.name}s` : `Process Another ${fileType.name}`}
+              </button>
+              <button
+                onClick={() => setSelectedTool(null)}
+                className="px-6 py-3 border-2 border-zinc-300 dark:border-zinc-700 rounded-lg font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all"
+              >
+                Choose Different Tool
+              </button>
+              <Link
+                href="/"
+                className="px-6 py-3 border-2 border-zinc-300 dark:border-zinc-700 rounded-lg font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all inline-flex items-center justify-center"
+              >
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      ) : !selectedTool ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {fileType.tools.map((tool, index) => (
             <motion.div
