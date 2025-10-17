@@ -36,20 +36,47 @@ const defaultSettings = {
   enableNotifications: true,
 };
 
+// Fetch settings from API on load
+if (typeof window !== 'undefined') {
+  fetch('/api/admin/settings')
+    .then(res => res.json())
+    .then(data => {
+      useAdminSettings.setState(data);
+    })
+    .catch(() => {});
+}
+
 export const useAdminSettings = create<AdminSettings>()(
   persist(
     (set) => ({
       ...defaultSettings,
       
-      setMaintenanceMode: (enabled) => set({ maintenanceMode: enabled }),
+      setMaintenanceMode: (enabled) => {
+        set({ maintenanceMode: enabled });
+        fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ maintenanceMode: enabled }),
+        });
+      },
       setMaintenanceMessage: (message) => set({ maintenanceMessage: message }),
-      setMaxFileSize: (size) => set({ maxFileSize: size }),
-      toggleTool: (toolId) => set((state) => ({
-        enabledTools: {
-          ...state.enabledTools,
-          [toolId]: !state.enabledTools[toolId],
-        },
-      })),
+      setMaxFileSize: (size) => {
+        set({ maxFileSize: size });
+        fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ maxFileSize: size }),
+        });
+      },
+      toggleTool: (toolId) => {
+        const newTools = { ...useAdminSettings.getState().enabledTools, [toolId]: !useAdminSettings.getState().enabledTools[toolId] };
+        set({ enabledTools: newTools });
+        fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabledTools: newTools }),
+        });
+      },
       setFeaturedTools: (tools) => set({ featuredTools: tools }),
       setSiteTitle: (title) => set({ siteTitle: title }),
       setSiteDescription: (description) => set({ siteDescription: description }),
