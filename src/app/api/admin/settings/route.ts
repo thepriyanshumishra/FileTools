@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
+import { rateLimit, getClientIdentifier } from '@/lib/utils/rate-limit';
 
 const SETTINGS_KEY = 'admin:settings';
 
@@ -24,6 +25,17 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  // Rate limit: 20 requests per hour for admin updates
+  const identifier = getClientIdentifier(request);
+  const { success, remaining, resetTime } = rateLimit(`admin:${identifier}`, 20);
+
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Too many requests', resetTime },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await request.json();
     const currentSettings = await kv.get(SETTINGS_KEY) || defaultSettings;

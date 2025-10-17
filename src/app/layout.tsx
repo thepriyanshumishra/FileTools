@@ -11,6 +11,7 @@ import { HistoryPanel } from "@/components/ui/history-panel";
 import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 import { SettingsPanel } from "@/components/ui/settings-panel";
 import { PWAInstall } from "@/components/pwa-install";
+import { RateLimitWarning } from "@/components/ui/rate-limit-warning";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -68,6 +69,7 @@ export default function RootLayout({
           <SettingsPanel />
           <ShortcutsModal />
           <PWAInstall />
+          <RateLimitWarning />
           <SpeedInsights />
           <Analytics />
         </Providers>

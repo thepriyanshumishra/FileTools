@@ -57,6 +57,12 @@ export const useAdminSettings = create<AdminSettings>()(
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ maintenanceMode: enabled }),
+        }).then(res => {
+          if (res.status === 429) {
+            res.json().then(data => {
+              window.dispatchEvent(new CustomEvent('ratelimit', { detail: data }));
+            });
+          }
         });
       },
       setMaintenanceMessage: (message) => set({ maintenanceMessage: message }),
@@ -75,6 +81,12 @@ export const useAdminSettings = create<AdminSettings>()(
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ enabledTools: newTools }),
+        }).then(res => {
+          if (res.status === 429) {
+            res.json().then(data => {
+              window.dispatchEvent(new CustomEvent('ratelimit', { detail: data }));
+            });
+          }
         });
       },
       setFeaturedTools: (tools) => set({ featuredTools: tools }),

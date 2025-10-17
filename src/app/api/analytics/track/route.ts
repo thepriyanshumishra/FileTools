@@ -1,7 +1,26 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
+import { rateLimit, getClientIdentifier } from '@/lib/utils/rate-limit';
 
 export async function POST(request: Request) {
+  // Rate limit: 100 requests per hour
+  const identifier = getClientIdentifier(request);
+  const { success, remaining, resetTime } = rateLimit(identifier, 100);
+
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Too many requests', resetTime },
+      { 
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': '100',
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': resetTime.toString(),
+        },
+      }
+    );
+  }
+
   try {
     const event = await request.json();
     const date = new Date().toISOString().split('T')[0];
