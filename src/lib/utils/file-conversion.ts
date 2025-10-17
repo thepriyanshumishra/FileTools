@@ -1,4 +1,5 @@
 import { FileWithPreview } from "@/lib/store/conversion";
+import { validateFileSize, validateFileType, formatFileSize } from "./file-validation";
 
 type ConversionOptions = {
   outputFormat: string;
@@ -108,14 +109,18 @@ export function getSupportedOutputFormats(file: File): string[] {
   return conversionMap[extension] || [];
 }
 
-export function validateFile(file: File): string | null {
-  // Maximum file size (100MB)
-  const MAX_SIZE = 100 * 1024 * 1024;
-
-  if (file.size > MAX_SIZE) {
-    return "File size must be less than 100MB";
+export function validateFile(file: File, allowedExtensions?: string[]): string | null {
+  const sizeValidation = validateFileSize(file);
+  if (!sizeValidation.valid) {
+    return sizeValidation.error || "File size exceeds limit";
   }
 
-  // Add more validation as needed
+  if (allowedExtensions) {
+    const typeValidation = validateFileType(file, allowedExtensions);
+    if (!typeValidation.valid) {
+      return typeValidation.error || "Invalid file type";
+    }
+  }
+
   return null;
 }

@@ -52,7 +52,7 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-6 sm:px-4 py-8">
       {/* Hero Section */}
       <section className="relative mb-20 overflow-hidden rounded-3xl">
         {/* Animated Background */}
@@ -101,19 +101,19 @@ export default function HomePage() {
 
       {/* Stats Section */}
       <section className="mb-20">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-3">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="glass rounded-2xl p-6 text-center"
+              className="glass rounded-2xl p-4 sm:p-6 text-center"
             >
-              <div className="mb-2 text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent break-words">
+              <div className="mb-1 sm:mb-2 text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent break-words">
                 {stat.value}
               </div>
-              <div className="text-sm text-zinc-600 dark:text-zinc-400 break-words">
+              <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 break-words">
                 {stat.label}
               </div>
             </motion.div>
@@ -129,20 +129,20 @@ export default function HomePage() {
             Everything you need to work with files, right in your browser
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="glass rounded-2xl p-8"
+              className="glass rounded-2xl p-5 sm:p-8"
             >
-              <div className="mb-4 inline-flex rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-3">
-                <feature.icon className="h-6 w-6 text-purple-500" />
+              <div className="mb-3 sm:mb-4 inline-flex rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-2.5 sm:p-3">
+                <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
               </div>
-              <h3 className="mb-2 text-xl font-semibold break-words">{feature.title}</h3>
-              <p className="text-zinc-600 dark:text-zinc-400 break-words">
+              <h3 className="mb-1.5 sm:mb-2 text-lg sm:text-xl font-semibold break-words">{feature.title}</h3>
+              <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 break-words">
                 {feature.description}
               </p>
             </motion.div>
@@ -162,7 +162,7 @@ export default function HomePage() {
             </div>
             <StarIcon className="h-8 w-8 text-yellow-500" />
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {favoriteTools.map(({ extension, toolName, fileType, tool }, index) => (
               <motion.div
                 key={`${extension}-${toolName}`}
@@ -172,7 +172,7 @@ export default function HomePage() {
               >
                 <Link
                   href={`/tools/${extension}`}
-                  className="glass hover-card group block rounded-2xl p-6 transition-all relative overflow-hidden"
+                  className="glass hover-card group block rounded-2xl p-4 sm:p-6 transition-all relative overflow-hidden"
                 >
                   <div className={`absolute top-0 right-0 w-24 h-24 ${fileType?.color} opacity-10 blur-2xl rounded-full -mr-12 -mt-12`} />
                   <div className="relative z-10">
@@ -241,7 +241,7 @@ export default function HomePage() {
             <p className="text-zinc-600 dark:text-zinc-400">
               {category.description}
             </p>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {category.types.map((type) => (
                 <motion.div
                   key={type.extension}
@@ -252,7 +252,7 @@ export default function HomePage() {
                 >
                   <Link
                     href={`/tools/${type.extension}`}
-                    className="glass hover-card group block rounded-2xl p-6 transition-all h-full flex flex-col relative overflow-hidden"
+                    className="glass hover-card group block rounded-2xl p-4 sm:p-6 transition-all h-full flex flex-col relative overflow-hidden"
                   >
                     <div
                       className={`absolute top-0 right-0 w-32 h-32 ${type.color} opacity-10 blur-3xl rounded-full -mr-16 -mt-16`}
@@ -300,7 +300,7 @@ export default function HomePage() {
             Join thousands who process files securely every day
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
           {[
             {
               name: "Sarah Chen",
@@ -326,7 +326,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="glass rounded-2xl p-6"
+              className="glass rounded-2xl p-4 sm:p-6"
             >
               <div className="mb-4 flex gap-1">
                 {[...Array(testimonial.rating)].map((_, i) => (

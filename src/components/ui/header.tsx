@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { DocumentTextIcon, MagnifyingGlassIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon, MagnifyingGlassIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { SearchModal } from "@/components/ui/search-modal";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,17 +33,17 @@ export function Header() {
   return (
     <>
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 bg-white/90 backdrop-blur-xl dark:border-zinc-800/50 dark:bg-zinc-900/90 shadow-sm">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2.5 font-bold text-xl group">
-          <div className="rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-2.5 shadow-lg group-hover:shadow-purple-500/50 transition-shadow">
-            <DocumentTextIcon className="h-5 w-5 text-white" />
+      <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6">
+        <Link href="/" className="flex items-center gap-2 sm:gap-2.5 font-bold text-lg sm:text-xl group">
+          <div className="rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-2 sm:p-2.5 shadow-lg group-hover:shadow-purple-500/50 transition-shadow">
+            <DocumentTextIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
           </div>
           <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
             FileTools
           </span>
         </Link>
         
-        <nav className="flex items-center gap-3">
+        <nav className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
           <div className="hidden md:flex items-center gap-1 mr-2">
             <Link href="/#tools" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
               Tools
@@ -57,15 +58,15 @@ export function Header() {
           
           <div className="h-8 w-px bg-zinc-300 dark:bg-zinc-700 hidden md:block" />
           
-          <ThemeToggle />
+          <ThemeToggle className="hidden md:block" />
           
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 px-3 py-2 text-sm transition-all shadow-sm hover:shadow"
+            className="flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 md:w-auto md:gap-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 md:px-3 md:py-2 text-sm transition-all shadow-sm hover:shadow"
             title="Search tools (⌘K)"
           >
-            <MagnifyingGlassIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">Search</span>
+            <MagnifyingGlassIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden md:inline">Search</span>
             <kbd className="hidden rounded bg-white dark:bg-zinc-900 px-1.5 py-0.5 text-xs font-semibold border border-zinc-300 dark:border-zinc-600 md:inline">
               ⌘K
             </kbd>
@@ -73,14 +74,50 @@ export function Header() {
           
           <button
             onClick={() => setShortcutsOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-all shadow-sm hover:shadow"
+            className="hidden md:flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-all shadow-sm hover:shadow"
             title="Keyboard shortcuts (Press ?)"
           >
             <QuestionMarkCircleIcon className="h-5 w-5" />
           </button>
+          
+          <ThemeToggle className="md:hidden" />
+          
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-all shadow-sm hover:shadow"
+          >
+            {mobileMenuOpen ? <XMarkIcon className="h-4 w-4 sm:h-5 sm:w-5" /> : <Bars3Icon className="h-4 w-4 sm:h-5 sm:w-5" />}
+          </button>
         </nav>
       </div>
     </header>
+    
+    {/* Mobile Menu */}
+    {mobileMenuOpen && (
+      <div className="md:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+        <div className="absolute top-16 left-0 right-0 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 shadow-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="container mx-auto px-4 py-4 space-y-2">
+            <Link href="/#tools" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+              Tools
+            </Link>
+            <Link href="/#features" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+              Features
+            </Link>
+            <Link href="/admin" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+              Admin
+            </Link>
+            <div className="h-px bg-zinc-200 dark:bg-zinc-800 my-2" />
+            <button
+              onClick={() => { setShortcutsOpen(true); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30"
+            >
+              <QuestionMarkCircleIcon className="h-4 w-4" />
+              Keyboard Shortcuts
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     
     <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     

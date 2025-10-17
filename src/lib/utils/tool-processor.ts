@@ -2,6 +2,7 @@ import * as imageTools from './image-tools';
 import * as pdfTools from './pdf-tools';
 import * as videoTools from './video-tools';
 import * as audioTools from './audio-tools';
+import { validateFileSize, validateMultipleFiles } from './file-validation';
 
 export interface ToolOptions {
   toolName: string;
@@ -12,6 +13,29 @@ export interface ToolOptions {
 
 export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> {
   const { toolName, files, params = {} } = options;
+  
+  // Validate files
+  if (!files || files.length === 0) {
+    throw new Error('No files provided');
+  }
+  
+  // Validate file sizes
+  for (const file of files) {
+    const validation = validateFileSize(file);
+    if (!validation.valid) {
+      throw new Error(validation.error || 'File validation failed');
+    }
+  }
+  
+  // Validate multiple files for merge operations
+  const multipleFilesTools = ['Merge PDFs', 'Merge Audio', 'Merge Videos'];
+  if (multipleFilesTools.includes(toolName)) {
+    const validation = validateMultipleFiles(files, 20);
+    if (!validation.valid) {
+      throw new Error(validation.error || 'Too many files');
+    }
+  }
+  
   const file = files[0];
 
   // Image Tools
