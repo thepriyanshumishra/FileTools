@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
+import { kv } from '@vercel/kv';
 
-// Simple in-memory store (resets on deployment)
-// For production, use Vercel KV, Postgres, or MongoDB
-let globalSettings = {
+const SETTINGS_KEY = 'admin:settings';
+
+const defaultSettings = {
   maintenanceMode: false,
   maintenanceMessage: 'Site is under maintenance. Please check back later.',
   maxFileSize: 500,
@@ -14,14 +15,21 @@ let globalSettings = {
 };
 
 export async function GET() {
-  return NextResponse.json(globalSettings);
+  try {
+    const settings = await kv.get(SETTINGS_KEY) || defaultSettings;
+    return NextResponse.json(settings);
+  } catch (error) {
+    return NextResponse.json(defaultSettings);
+  }
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    globalSettings = { ...globalSettings, ...body };
-    return NextResponse.json({ success: true, settings: globalSettings });
+    const currentSettings = await kv.get(SETTINGS_KEY) || defaultSettings;
+    const updatedSettings = { ...currentSettings, ...body };
+    await kv.set(SETTINGS_KEY, updatedSettings);
+    return NextResponse.json({ success: true, settings: updatedSettings });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Invalid request' }, { status: 400 });
   }
