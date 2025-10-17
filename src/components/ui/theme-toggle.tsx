@@ -58,6 +58,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
           overflow: hidden;
           z-index: 1;
           border-radius: 34px;
+          border: 2px solid rgba(0, 0, 0, 0.1);
         }
         .theme-slider::before {
           position: absolute;
@@ -78,6 +79,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
         }
         .theme-toggle-input:checked + .theme-slider {
           background: linear-gradient(-45deg, #222, #000030);
+          border: 2px solid rgba(255, 255, 255, 0.2);
         }
         .theme-toggle-input:checked + .theme-slider::before {
           background: #dddddd;
