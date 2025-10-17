@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -11,6 +11,11 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className = "" }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -26,6 +31,14 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [theme, setTheme]);
+
+  if (!mounted) {
+    return (
+      <div className={`glass flex h-12 w-24 items-center justify-center rounded-full ${className}`}>
+        <div className="h-6 w-6" />
+      </div>
+    );
+  }
 
   return (
     <motion.button
