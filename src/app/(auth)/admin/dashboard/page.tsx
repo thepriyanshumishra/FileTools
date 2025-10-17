@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { fileCategories } from "@/lib/utils/file-types";
 import { useAdminSettings } from "@/lib/store/admin-settings";
@@ -19,7 +19,8 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function AdminDashboardPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'tools' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'tools' | 'settings' | 'analytics'>('overview');
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
   const { history, clearHistory } = useHistoryStore();
   const { favorites } = useFavoritesStore();
   
@@ -53,6 +54,15 @@ export default function AdminDashboardPage() {
     ), 0
   );
 
+  useEffect(() => {
+    if (activeTab === 'analytics') {
+      fetch('/api/analytics/stats')
+        .then(res => res.json())
+        .then(data => setAnalyticsData(data))
+        .catch(() => {});
+    }
+  }, [activeTab]);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-800">
       {/* Header */}
@@ -81,6 +91,7 @@ export default function AdminDashboardPage() {
         <div className="flex gap-2 mb-8">
           {[
             { id: 'overview', label: 'Overview', icon: ChartBarIcon },
+            { id: 'analytics', label: 'Analytics', icon: ChartBarIcon },
             { id: 'tools', label: 'Tools Management', icon: WrenchScrewdriverIcon },
             { id: 'settings', label: 'Settings', icon: Cog6ToothIcon },
           ].map((tab) => (
@@ -186,6 +197,82 @@ export default function AdminDashboardPage() {
                 <p className="text-center text-zinc-500 py-8">No recent activity</p>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Analytics Tab */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-6">
+            {analyticsData ? (
+              <>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-lg">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">Total Events</p>
+                    <p className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent">
+                      {analyticsData.totalEvents}
+                    </p>
+                  </div>
+                  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-lg">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">Tool Views</p>
+                    <p className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
+                      {analyticsData.actions?.view || 0}
+                    </p>
+                  </div>
+                  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-lg">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">Processed</p>
+                    <p className="text-4xl font-bold bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
+                      {analyticsData.actions?.process || 0}
+                    </p>
+                  </div>
+                  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-lg">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">Errors</p>
+                    <p className="text-4xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+                      {analyticsData.actions?.error || 0}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-lg">
+                    <h3 className="text-lg font-bold mb-4">Popular Tools</h3>
+                    <div className="space-y-2">
+                      {Object.entries(analyticsData.tools || {}).sort((a: any, b: any) => b[1] - a[1]).slice(0, 10).map(([tool, count]: any) => (
+                        <div key={tool} className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+                          <span className="font-medium text-sm">{tool}</span>
+                          <span className="text-sm text-zinc-500">{count} uses</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-lg">
+                    <h3 className="text-lg font-bold mb-4">Browser Distribution</h3>
+                    <div className="space-y-2">
+                      {Object.entries(analyticsData.browsers || {}).map(([browser, count]: any) => (
+                        <div key={browser} className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+                          <span className="font-medium text-sm">{browser}</span>
+                          <span className="text-sm text-zinc-500">{count} users</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <h3 className="text-lg font-bold mb-4 mt-6">Device Distribution</h3>
+                    <div className="space-y-2">
+                      {Object.entries(analyticsData.devices || {}).map(([device, count]: any) => (
+                        <div key={device} className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+                          <span className="font-medium text-sm">{device}</span>
+                          <span className="text-sm text-zinc-500">{count} users</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="bg-white dark:bg-zinc-800 rounded-xl p-12 shadow-lg text-center">
+                <p className="text-zinc-500">Loading analytics...</p>
+              </div>
+            )}
           </div>
         )}
 

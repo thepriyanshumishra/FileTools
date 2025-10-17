@@ -16,6 +16,7 @@ import { FileWithPreview } from "@/lib/store/conversion";
 import { processTool, downloadBlob } from "@/lib/utils/tool-processor";
 import { getToolInstructions } from "@/lib/utils/tool-instructions";
 import { ToastContainer } from "@/components/ui/toast";
+import { trackEvent } from "@/lib/utils/analytics";
 import { useFavoritesStore } from "@/lib/store/favorites";
 import { useHistoryStore } from "@/lib/store/history";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
@@ -43,6 +44,12 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
   const [showSuccess, setShowSuccess] = useState(false);
   const { toggleFavorite, isFavorite } = useFavoritesStore();
   const { addToHistory } = useHistoryStore();
+
+  useEffect(() => {
+    if (selectedTool) {
+      trackEvent({ tool: selectedTool, action: 'view' });
+    }
+  }, [selectedTool]);
 
   const handleOptionChange = (id: string, value: string | number | boolean) => {
     setToolOptions(prev => ({ ...prev, [id]: value }));
@@ -252,11 +259,20 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
       
       addToast('Processing complete! File(s) downloaded.', 'success');
       
+      // Track successful processing
+      trackEvent({ 
+        tool: selectedTool, 
+        action: 'process',
+        fileSize: files[0]?.size,
+        fileType: fileType?.extension
+      });
+      
       // Show success page
       setShowSuccess(true);
     } catch (error) {
       console.error('Processing error:', error);
       setFiles(prev => prev.map(f => ({ ...f, status: 'error' as const })));
+      trackEvent({ tool: selectedTool, action: 'error' });
       addToast('Error: ' + (error as Error).message, 'error');
     } finally {
       setProcessing(false);
