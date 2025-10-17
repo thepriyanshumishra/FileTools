@@ -114,6 +114,12 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   if (toolName === 'Unlock PDF') {
     return await pdfTools.unlockPDF(file, (params.password as string) || '');
   }
+  if (toolName === 'PDF to Word') {
+    return await pdfTools.pdfToWord(file);
+  }
+  if (toolName === 'PDF to Excel') {
+    return await pdfTools.pdfToExcel(file);
+  }
   if (toolName === 'PDF to JPG') {
     const images = await pdfTools.pdfToImages(file);
     if (images.length === 0) throw new Error('Conversion not supported');

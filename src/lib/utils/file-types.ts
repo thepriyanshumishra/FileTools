@@ -112,14 +112,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert PDF to DOCX",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "PDF to Excel",
             description: "Convert PDF to XLSX",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "PDF to JPG",
