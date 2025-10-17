@@ -12,15 +12,15 @@ interface ToolOption {
   min?: number;
   max?: number;
   step?: number;
-  defaultValue: any;
+  defaultValue: string | number | boolean;
   description?: string;
 }
 
 interface ToolOptionsProps {
   toolName: string;
   options: ToolOption[];
-  values: Record<string, any>;
-  onChange: (id: string, value: any) => void;
+  values: Record<string, string | number | boolean>;
+  onChange: (id: string, value: string | number | boolean) => void;
 }
 
 export function ToolOptions({ toolName, options, values, onChange }: ToolOptionsProps) {
@@ -74,7 +74,7 @@ export function ToolOptions({ toolName, options, values, onChange }: ToolOptions
 
                     {option.type === "select" && (
                       <select
-                        value={values[option.id] ?? option.defaultValue}
+                        value={String(values[option.id] ?? option.defaultValue)}
                         onChange={(e) => onChange(option.id, e.target.value)}
                         className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:border-zinc-700 dark:bg-zinc-800"
                       >
@@ -92,7 +92,7 @@ export function ToolOptions({ toolName, options, values, onChange }: ToolOptions
                         min={option.min}
                         max={option.max}
                         step={option.step}
-                        value={values[option.id] ?? option.defaultValue}
+                        value={Number(values[option.id] ?? option.defaultValue)}
                         onChange={(e) => onChange(option.id, Number(e.target.value))}
                         className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:border-zinc-700 dark:bg-zinc-800"
                       />
@@ -105,7 +105,7 @@ export function ToolOptions({ toolName, options, values, onChange }: ToolOptions
                           min={option.min}
                           max={option.max}
                           step={option.step}
-                          value={values[option.id] ?? option.defaultValue}
+                          value={Number(values[option.id] ?? option.defaultValue)}
                           onChange={(e) => onChange(option.id, Number(e.target.value))}
                           className="w-full accent-purple-600"
                         />

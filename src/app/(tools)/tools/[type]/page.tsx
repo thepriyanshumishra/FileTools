@@ -38,11 +38,11 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
   const [pdfPreviews, setPdfPreviews] = useState<Record<string, string>>({});
   const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: "success" | "error" }>>([]);
   const [showInstructions, setShowInstructions] = useState(false);
-  const [toolOptions, setToolOptions] = useState<Record<string, any>>({});
+  const [toolOptions, setToolOptions] = useState<Record<string, string | number | boolean>>({});
   const { toggleFavorite, isFavorite } = useFavoritesStore();
   const { addToHistory } = useHistoryStore();
 
-  const handleOptionChange = (id: string, value: any) => {
+  const handleOptionChange = (id: string, value: string | number | boolean) => {
     setToolOptions(prev => ({ ...prev, [id]: value }));
   };
 
@@ -110,7 +110,7 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
     if (files.length > 0) {
       loadPdfPreviews();
     }
-  }, [files]);
+  }, [files, pdfPreviews]);
 
   const onDragEnd = (result: { destination?: { index: number } | null; source: { index: number } }) => {
     if (!result.destination) return;

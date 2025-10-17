@@ -1,4 +1,16 @@
-export const toolOptionsConfig: Record<string, any[]> = {
+interface ToolOption {
+  id: string;
+  label: string;
+  type: "select" | "number" | "slider" | "toggle";
+  options?: string[];
+  min?: number;
+  max?: number;
+  step?: number;
+  defaultValue: string | number | boolean;
+  description?: string;
+}
+
+export const toolOptionsConfig: Record<string, ToolOption[]> = {
   "Compress": [
     {
       id: "quality",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -17,7 +17,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
-  const { favorites, isFavorite } = useFavoritesStore();
+  const { isFavorite } = useFavoritesStore();
 
   // Get all tools
   const allTools = useMemo(() => {
@@ -55,6 +55,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       .slice(0, 8);
   }, [query, allTools]);
 
+  const handleSelect = useCallback((tool: typeof filteredTools[0]) => {
+    router.push(`/tools/${tool.extension}`);
+    onClose();
+  }, [router, onClose]);
+
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -77,7 +82,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, filteredTools, selectedIndex]);
+  }, [isOpen, filteredTools, selectedIndex, handleSelect, onClose]);
 
   // Reset on open/close
   useEffect(() => {
@@ -86,11 +91,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       setSelectedIndex(0);
     }
   }, [isOpen]);
-
-  const handleSelect = (tool: typeof filteredTools[0]) => {
-    router.push(`/tools/${tool.extension}`);
-    onClose();
-  };
 
   if (!isOpen) return null;
 
