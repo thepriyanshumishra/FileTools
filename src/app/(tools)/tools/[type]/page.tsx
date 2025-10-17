@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useCallback, useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, InformationCircleIcon, LightBulbIcon, StarIcon } from "@heroicons/react/24/outline";
@@ -248,6 +249,12 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
 
   return (
     <main className="container mx-auto px-4 py-8 min-h-screen">
+      <Link
+        href="/"
+        className="glass inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-lg text-sm font-medium hover:scale-105 transition-transform"
+      >
+        ← Back to Home
+      </Link>
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -264,17 +271,16 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
       {!selectedTool ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {fileType.tools.map((tool, index) => (
-            <motion.button
+            <motion.div
               key={tool.name}
-              onClick={() => setSelectedTool(tool.name)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              disabled={tool.status === 'maintenance'}
+              onClick={() => tool.status !== 'maintenance' && setSelectedTool(tool.name)}
               className={cn(
-                "glass hover-card relative overflow-hidden rounded-2xl p-6 text-left transition-all",
+                "glass hover-card relative overflow-hidden rounded-2xl p-6 text-left transition-all cursor-pointer",
                 tool.status === 'maintenance' && "opacity-60 cursor-not-allowed"
               )}
             >
@@ -310,7 +316,7 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
                   {tool.description}
                 </p>
               </div>
-            </motion.button>
+            </motion.div>
           ))}
         </div>
       ) : (

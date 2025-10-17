@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 
 interface ThemeToggleProps {
@@ -33,37 +31,157 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
   }, [theme, setTheme]);
 
   if (!mounted) {
-    return (
-      <div className={`glass flex h-12 w-24 items-center justify-center rounded-full ${className}`}>
-        <div className="h-6 w-6" />
-      </div>
-    );
+    return <div className={`w-20 h-9 ${className}`} />;
   }
 
   return (
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className={`glass glass-hover glass-active flex h-12 w-24 items-center justify-center rounded-full ${className}`}
-      title={`Switch to ${theme === "dark" ? "light" : "dark"} mode (Shift+Space)`}
-    >
-      <div className="relative h-8 w-16">
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          initial={false}
-          animate={{ opacity: theme === "dark" ? 0 : 1 }}
-        >
-          <SunIcon className="h-6 w-6 text-amber-500" />
-        </motion.div>
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center"
-          initial={false}
-          animate={{ opacity: theme === "dark" ? 1 : 0 }}
-        >
-          <MoonIcon className="h-6 w-6 text-blue-500" />
-        </motion.div>
-      </div>
-    </motion.button>
+    <div className={className}>
+      <style jsx>{`
+        .theme-toggle-container {
+          position: relative;
+          display: inline-block;
+          width: 80px;
+          height: 34px;
+          transform: scale(0.7);
+        }
+        .theme-toggle-input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .theme-slider {
+          position: absolute;
+          cursor: pointer;
+          inset: 0;
+          background: linear-gradient(skyblue, cadetblue);
+          transition: 0.4s;
+          overflow: hidden;
+          z-index: 1;
+          border-radius: 34px;
+        }
+        .theme-slider::before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: #ffd700;
+          transition: 0.4s;
+          border-radius: 50%;
+          box-shadow:
+            inset 0 -1px 2px #987416,
+            0 1px 2px #80808077,
+            0 0 0 10px #ffffff22,
+            0 0 0 20px #ffffff22,
+            10px 0 0 20px #ffffff22;
+        }
+        .theme-toggle-input:checked + .theme-slider {
+          background: linear-gradient(-45deg, #222, #000030);
+        }
+        .theme-toggle-input:checked + .theme-slider::before {
+          background: #dddddd;
+          transform: translateX(180%);
+          box-shadow:
+            inset 0 -1px 2px #808080,
+            0 1px 2px #555555,
+            0 0 0 10px #ffffff22,
+            0 0 0 20px #ffffff22,
+            -10px 0 0 20px #ffffff22;
+        }
+        .theme-slider::after {
+          content: "";
+          position: absolute;
+          background: #535370;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          bottom: 65%;
+          right: 16%;
+          box-shadow:
+            -8px 7px 0 3px #535370,
+            2px 10px 0 #535370;
+          transition: .4s;
+          transform: scale(0) rotate(360deg);
+          filter: saturate(.75);
+        }
+        .theme-toggle-input:checked + .theme-slider::after {
+          transform: scale(1) rotate(-24deg);
+        }
+        .theme-toggle-input:checked + .theme-slider .background {
+          transform: translateY(260%);
+          opacity: 0;
+        }
+        .star {
+          transform: scale(0);
+          transition: .4s;
+        }
+        .theme-toggle-input:checked + .theme-slider .star {
+          position: absolute;
+          width: 0;
+          height: 0;
+          border: 10px solid transparent;
+          border-bottom: 7px solid #ffffff;
+          transform: scale(.3) translate(50%) rotate(35deg);
+          border-top: none;
+          margin: 5px 0;
+        }
+        .theme-toggle-input:checked + .theme-slider .star:last-child {
+          transform: scale(.4) translate(225%, 300%) rotate(35deg);
+        }
+        .theme-toggle-input:checked + .theme-slider .star::before,
+        .theme-toggle-input:checked + .theme-slider .star::after {
+          content: "";
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-top: none;
+        }
+        .theme-toggle-input:checked + .theme-slider .star::before {
+          border: 3px solid transparent;
+          border-bottom: 8px solid #ffffff;
+          transform: rotate(35deg);
+          top: -7.5px;
+          left: 1.5px;
+        }
+        .theme-toggle-input:checked + .theme-slider .star::after {
+          border: 10px solid transparent;
+          border-bottom: 7px solid #ffffff;
+          transform: rotate(70deg);
+          top: -7px;
+          left: -4.5px;
+        }
+        .background {
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: #ffffff;
+          border-radius: 50%;
+          bottom: 0;
+          right: 0;
+          box-shadow:
+            0 -10px 0 8px #ffffff,
+            -10px 0px 0 8px #ffffff,
+            -45px 4px 0 5px #ffffff,
+            -60px 0px 0 3px #ffffff,
+            -29px 2px 0 8px #ffffff;
+          transition: .4s;
+        }
+      `}</style>
+      <label className="theme-toggle-container">
+        <input
+          type="checkbox"
+          className="theme-toggle-input"
+          checked={theme === "dark"}
+          onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode (Shift+Space)`}
+        />
+        <span className="theme-slider">
+          <div className="background"></div>
+          <div className="star"></div>
+          <div className="star"></div>
+        </span>
+      </label>
+    </div>
   );
 }

@@ -46,7 +46,7 @@ export function HistoryPanel() {
       {/* History Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 right-8 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-800 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl dark:bg-zinc-700"
+        className="fixed bottom-8 right-8 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-800 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl dark:bg-zinc-700"
         title="History (⌘H)"
       >
         <ClockIcon className="h-6 w-6" />

@@ -79,10 +79,10 @@ export default function HomePage() {
             <p className="mx-auto mb-6 md:mb-8 max-w-2xl text-base text-zinc-600 dark:text-zinc-400 md:text-lg lg:text-xl px-4">
               Convert, compress, and edit your files right in your browser. Fast, secure, and completely free.
             </p>
-            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 md:gap-4 px-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
               <Link
                 href="#tools"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50 w-full sm:w-auto"
+                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50"
               >
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 <RocketLaunchIcon className="h-4 w-4 md:h-5 md:w-5 relative z-10" />
@@ -90,7 +90,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="#features"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-zinc-300 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30 w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-zinc-300 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30"
               >
                 Learn More
               </Link>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { DocumentTextIcon, MagnifyingGlassIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { SearchModal } from "@/components/ui/search-modal";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -30,10 +31,10 @@ export function Header() {
 
   return (
     <>
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 bg-white/80 backdrop-blur-lg dark:border-zinc-800/50 dark:bg-zinc-900/80">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 bg-white/90 backdrop-blur-xl dark:border-zinc-800/50 dark:bg-zinc-900/90 shadow-sm">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        <Link href="/" className="flex items-center gap-2.5 font-bold text-xl group">
+          <div className="rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-2.5 shadow-lg group-hover:shadow-purple-500/50 transition-shadow">
             <DocumentTextIcon className="h-5 w-5 text-white" />
           </div>
           <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
@@ -41,38 +42,42 @@ export function Header() {
           </span>
         </Link>
         
-        <nav className="flex items-center gap-2">
+        <nav className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-1 mr-2">
+            <Link href="/#tools" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+              Tools
+            </Link>
+            <Link href="/#features" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+              Features
+            </Link>
+            <Link href="/admin" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+              Admin
+            </Link>
+          </div>
+          
+          <div className="h-8 w-px bg-zinc-300 dark:bg-zinc-700 hidden md:block" />
+          
+          <ThemeToggle />
+          
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+            className="flex items-center gap-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 px-3 py-2 text-sm transition-all shadow-sm hover:shadow"
             title="Search tools (⌘K)"
           >
             <MagnifyingGlassIcon className="h-4 w-4" />
             <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden rounded bg-zinc-200 px-1.5 py-0.5 text-xs font-semibold dark:bg-zinc-700 md:inline">
+            <kbd className="hidden rounded bg-white dark:bg-zinc-900 px-1.5 py-0.5 text-xs font-semibold border border-zinc-300 dark:border-zinc-600 md:inline">
               ⌘K
             </kbd>
           </button>
           
           <button
             onClick={() => setShortcutsOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-300 text-sm transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-all shadow-sm hover:shadow"
             title="Keyboard shortcuts (Press ?)"
           >
             <QuestionMarkCircleIcon className="h-5 w-5" />
           </button>
-          
-          <div className="hidden md:flex items-center gap-6">
-            <Link href="/#tools" className="text-sm font-medium transition-colors hover:text-purple-600">
-              Tools
-            </Link>
-            <Link href="/#features" className="text-sm font-medium transition-colors hover:text-purple-600">
-              Features
-            </Link>
-            <Link href="/admin" className="text-sm font-medium transition-colors hover:text-purple-600">
-              Admin
-            </Link>
-          </div>
         </nav>
       </div>
     </header>

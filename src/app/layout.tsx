@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { HistoryPanel } from "@/components/ui/history-panel";
@@ -35,7 +35,7 @@ export default function RootLayout({
           <Header />
           <div className="min-h-screen">{children}</div>
           <Footer />
-          <ThemeToggle className="fixed bottom-8 right-8" />
+
           <HistoryPanel />
           <SettingsPanel />
           <ShortcutsModal />
