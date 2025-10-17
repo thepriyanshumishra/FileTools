@@ -7,6 +7,7 @@ import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { HistoryPanel } from "@/components/ui/history-panel";
 import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
+import { SettingsPanel } from "@/components/ui/settings-panel";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Footer />
           <ThemeToggle className="fixed bottom-8 right-8" />
           <HistoryPanel />
+          <SettingsPanel />
           <ShortcutsModal />
           <SpeedInsights />
         </Providers>

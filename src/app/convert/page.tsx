@@ -8,7 +8,6 @@ import {
   CloudIcon,
   ComputerDesktopIcon,
 } from "@heroicons/react/24/outline";
-import * as Dialog from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 
 interface FileWithPreview extends File {
@@ -36,18 +35,54 @@ export default function ConvertPage() {
   });
 
   const handleConvert = async () => {
+    if (!outputFormat || files.length === 0) return;
     setProcessing(true);
-    // TODO: Implement conversion logic
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated delay
-    setProcessing(false);
+    
+    try {
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("outputFormat", outputFormat);
+
+        const response = await fetch("/api/convert", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || "Conversion failed");
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name.replace(/\.[^.]+$/, `.${outputFormat}`);
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+      alert(`Successfully converted ${files.length} file(s)!`);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Conversion failed');
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <h1 className="mb-4 text-center text-3xl font-bold">Convert Files</h1>
-      <p className="mb-8 text-center text-zinc-600 dark:text-zinc-400">
+      <h1 className="mb-4 text-center text-3xl font-bold">Universal File Converter</h1>
+      <p className="mb-4 text-center text-zinc-600 dark:text-zinc-400">
         Drop your files below to convert them to another format
       </p>
+      <div className="mx-auto mb-8 max-w-2xl rounded-lg bg-blue-50 border border-blue-200 p-4 text-center dark:bg-blue-950/30 dark:border-blue-900">
+        <p className="text-sm text-blue-800 dark:text-blue-200">
+          💡 <strong>Tip:</strong> For specific file types, use dedicated tools from the homepage for better options and features!
+        </p>
+      </div>
 
       {/* Upload Zone */}
       <div
@@ -121,10 +156,14 @@ export default function ConvertPage() {
               className="w-full rounded-lg border border-zinc-300 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-800"
             >
               <option value="">Select output format...</option>
-              <option value="pdf">PDF</option>
-              <option value="jpg">JPG</option>
-              <option value="png">PNG</option>
-              {/* Add more format options based on input file type */}
+              <optgroup label="Images">
+                <option value="jpg">JPG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WebP</option>
+                <option value="avif">AVIF</option>
+                <option value="gif">GIF</option>
+                <option value="tiff">TIFF</option>
+              </optgroup>
             </select>
           </div>
 

@@ -18,6 +18,8 @@ import { ToastContainer } from "@/components/ui/toast";
 import { useFavoritesStore } from "@/lib/store/favorites";
 import { useHistoryStore } from "@/lib/store/history";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import { ToolOptions } from "@/components/ui/tool-options";
+import { getToolOptions } from "@/lib/utils/tool-options-config";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
@@ -36,8 +38,13 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
   const [pdfPreviews, setPdfPreviews] = useState<Record<string, string>>({});
   const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: "success" | "error" }>>([]);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [toolOptions, setToolOptions] = useState<Record<string, any>>({});
   const { toggleFavorite, isFavorite } = useFavoritesStore();
   const { addToHistory } = useHistoryStore();
+
+  const handleOptionChange = (id: string, value: any) => {
+    setToolOptions(prev => ({ ...prev, [id]: value }));
+  };
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -412,6 +419,20 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
                 </>
               )}
             </div>
+          </motion.div>
+
+          {/* Tool Options - Show after upload zone */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6"
+          >
+            <ToolOptions
+              toolName={selectedTool}
+              options={getToolOptions(selectedTool)}
+              values={toolOptions}
+              onChange={handleOptionChange}
+            />
           </motion.div>
 
           {files.length > 0 && (

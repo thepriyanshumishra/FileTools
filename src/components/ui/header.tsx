@@ -45,6 +45,7 @@ export function Header() {
           <button
             onClick={() => setSearchOpen(true)}
             className="flex items-center gap-2 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+            title="Search tools (⌘K)"
           >
             <MagnifyingGlassIcon className="h-4 w-4" />
             <span className="hidden sm:inline">Search</span>
@@ -56,7 +57,7 @@ export function Header() {
           <button
             onClick={() => setShortcutsOpen(true)}
             className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-300 text-sm transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-            title="Keyboard shortcuts (?)"
+            title="Keyboard shortcuts (Press ?)"
           >
             <QuestionMarkCircleIcon className="h-5 w-5" />
           </button>
@@ -98,9 +99,11 @@ export function Header() {
           <div className="space-y-3">
             {[
               { key: "⌘/Ctrl + K", description: "Open search" },
+              { key: "Shift + Space", description: "Toggle theme" },
+              { key: "⌘/Ctrl + H", description: "Toggle history" },
+              { key: "⌘/Ctrl + ,", description: "Open settings" },
               { key: "⌘/Ctrl + U", description: "Upload files" },
               { key: "⌘/Ctrl + Enter", description: "Process files" },
-              { key: "⌘/Ctrl + H", description: "Toggle history" },
               { key: "Esc", description: "Close modals / Go back" },
               { key: "?", description: "Show shortcuts" },
               { key: "↑ ↓", description: "Navigate search results" },
