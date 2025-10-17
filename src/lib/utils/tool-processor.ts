@@ -30,7 +30,7 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   }
   
   // Validate multiple files for merge operations
-  const multipleFilesTools = ['Merge PDFs', 'Merge Audio', 'Merge Videos'];
+  const multipleFilesTools = ['Merge PDFs', 'Merge Audio', 'Merge Videos', 'Create ZIP'];
   if (multipleFilesTools.includes(toolName)) {
     const validation = validateMultipleFiles(files, 20);
     if (!validation.valid) {
@@ -62,6 +62,18 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   if (toolName === 'Adjust Brightness') {
     return await imageTools.adjustBrightness(file, (params.brightness as number) || 20);
   }
+  if (toolName === 'Add Watermark' && file.type.startsWith('image/')) {
+    return await imageTools.addWatermark(file, (params.text as string) || 'Watermark');
+  }
+  if (toolName === 'Apply Filters') {
+    return await imageTools.applyFilter(file, (params.filter as string) || 'grayscale(100%)');
+  }
+  if (toolName === 'Blur Image') {
+    return await imageTools.blurImage(file, (params.amount as number) || 5);
+  }
+  if (toolName === 'Sharpen Image') {
+    return await imageTools.sharpenImage(file);
+  }
 
   // PDF Tools
   if (toolName === 'Merge PDFs') {
@@ -79,6 +91,12 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   if (toolName === 'Extract Pages') {
     return await pdfTools.extractPDFPages(file, (params.pageIndices as number[]) || [0]);
   }
+  if (toolName === 'Compress PDF') {
+    return await pdfTools.compressPDF(file);
+  }
+  if (toolName === 'Organize Pages') {
+    return await pdfTools.organizePDFPages(file, (params.pageOrder as number[]) || [0, 1, 2]);
+  }
 
   // Video Tools
   if (toolName === 'Compress Video') {
@@ -95,6 +113,21 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   }
   if (toolName === 'Rotate Video') {
     return await videoTools.rotateVideo(file, (params.degrees as number) || 90);
+  }
+  if (toolName === 'Merge Videos') {
+    return await videoTools.mergeVideos(files);
+  }
+  if (toolName === 'Remove Audio') {
+    return await videoTools.removeAudio(file);
+  }
+  if (toolName === 'Crop Video') {
+    return await videoTools.cropVideo(file, (params.width as number) || 640, (params.height as number) || 480, (params.x as number) || 0, (params.y as number) || 0);
+  }
+  if (toolName === 'Change Speed' && file.type.startsWith('video/')) {
+    return await videoTools.changeVideoSpeed(file, (params.speed as number) || 1.5);
+  }
+  if (toolName === 'Reverse Video') {
+    return await videoTools.reverseVideo(file);
   }
 
   // Audio Tools
@@ -118,6 +151,12 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   }
   if (toolName === 'Convert Format' && file.type.startsWith('audio/')) {
     return await audioTools.convertAudioFormat(file, (params.format as string) || 'mp3');
+  }
+  if (toolName === 'Reverse Audio') {
+    return await audioTools.reverseAudio(file);
+  }
+  if (toolName === 'Extract Audio from Video') {
+    return await videoTools.extractAudioFromVideo(file);
   }
 
   // Document Tools

@@ -56,7 +56,7 @@ export const fileCategories: FileCategory[] = [
             description: "Reduce PDF file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Extract Images",
@@ -91,7 +91,7 @@ export const fileCategories: FileCategory[] = [
             description: "Add watermark to PDF pages",
             isOffline: true,
             icon: "watermark",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Protect PDF",
@@ -133,7 +133,7 @@ export const fileCategories: FileCategory[] = [
             description: "Reorder PDF pages",
             isOffline: true,
             icon: "organize",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -443,7 +443,7 @@ export const fileCategories: FileCategory[] = [
             description: "Add watermark to image",
             isOffline: true,
             icon: "watermark",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Add Text",
@@ -457,7 +457,7 @@ export const fileCategories: FileCategory[] = [
             description: "Apply color filters and effects",
             isOffline: true,
             icon: "filter",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Adjust Brightness",
@@ -478,14 +478,14 @@ export const fileCategories: FileCategory[] = [
             description: "Apply blur effect",
             isOffline: true,
             icon: "blur",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Sharpen Image",
             description: "Enhance image sharpness",
             isOffline: true,
             icon: "sharpen",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -502,28 +502,28 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to JPG, WebP, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce image file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Resize",
             description: "Change image dimensions",
             isOffline: true,
             icon: "resize",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Crop",
             description: "Crop image to specific area",
             isOffline: true,
             icon: "crop",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Remove Background",
@@ -544,21 +544,21 @@ export const fileCategories: FileCategory[] = [
             description: "Rotate or flip image",
             isOffline: true,
             icon: "rotate",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Add Watermark",
             description: "Add watermark to image",
             isOffline: true,
             icon: "watermark",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Apply Filters",
             description: "Apply color filters",
             isOffline: true,
             icon: "filter",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -575,21 +575,21 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, WebP, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Resize",
             description: "Change GIF dimensions",
             isOffline: true,
             icon: "resize",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Optimize",
             description: "Reduce GIF file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Reverse",
@@ -613,21 +613,21 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to JPG, PNG, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Resize",
             description: "Change dimensions",
             isOffline: true,
             icon: "resize",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -675,14 +675,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to JPG, PNG, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -723,14 +723,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to JPG, PNG, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       }
@@ -754,49 +754,49 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to WAV, OGG, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress Audio",
             description: "Reduce audio file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Trim Audio",
             description: "Cut and trim audio file",
             isOffline: true,
             icon: "cut",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Merge Audio",
             description: "Combine multiple audio files",
             isOffline: true,
             icon: "merge",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Change Volume",
             description: "Adjust audio volume",
             isOffline: true,
             icon: "volume",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Change Speed",
             description: "Speed up or slow down audio",
             isOffline: true,
             icon: "speed",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Add Fade",
             description: "Add fade in/out effects",
             isOffline: true,
             icon: "fade",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Remove Noise",
@@ -817,14 +817,14 @@ export const fileCategories: FileCategory[] = [
             description: "Extract audio from video file",
             isOffline: true,
             icon: "extract",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Reverse Audio",
             description: "Play audio in reverse",
             isOffline: true,
             icon: "reverse",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -841,14 +841,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP3, OGG, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce audio file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -865,14 +865,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP3, WAV, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Trim Audio",
             description: "Cut and trim audio",
             isOffline: true,
             icon: "cut",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -889,14 +889,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP3, WAV, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -913,14 +913,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP3, WAV, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Trim Audio",
             description: "Cut and trim audio",
             isOffline: true,
             icon: "cut",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -937,7 +937,7 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP3, WAV, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Edit Metadata",
@@ -968,35 +968,35 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to AVI, MOV, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress Video",
             description: "Reduce video file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Trim Video",
             description: "Cut and trim video file",
             isOffline: true,
             icon: "cut",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Merge Videos",
             description: "Combine multiple videos",
             isOffline: true,
             icon: "merge",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Extract Audio",
             description: "Extract audio from video",
             isOffline: true,
             icon: "audio",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Add Subtitles",
@@ -1010,14 +1010,14 @@ export const fileCategories: FileCategory[] = [
             description: "Mute video audio track",
             isOffline: true,
             icon: "mute",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Rotate Video",
             description: "Rotate video orientation",
             isOffline: true,
             icon: "rotate",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Change Speed",
@@ -1031,21 +1031,21 @@ export const fileCategories: FileCategory[] = [
             description: "Crop video dimensions",
             isOffline: true,
             icon: "crop",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Add Watermark",
             description: "Add watermark to video",
             isOffline: true,
             icon: "watermark",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Video to GIF",
             description: "Convert video to animated GIF",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Extract Frames",
@@ -1059,7 +1059,7 @@ export const fileCategories: FileCategory[] = [
             description: "Play video in reverse",
             isOffline: true,
             icon: "reverse",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1076,14 +1076,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, MOV, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce video file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1100,21 +1100,21 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, AVI, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Trim Video",
             description: "Cut and trim video",
             isOffline: true,
             icon: "cut",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1131,7 +1131,7 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, AVI, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Extract Subtitles",
@@ -1145,7 +1145,7 @@ export const fileCategories: FileCategory[] = [
             description: "Extract audio tracks",
             isOffline: true,
             icon: "audio",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1162,14 +1162,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, AVI, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1186,14 +1186,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, AVI, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1210,14 +1210,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, AVI, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Extract Audio",
             description: "Extract audio from video",
             isOffline: true,
             icon: "audio",
-            status: "maintenance"
+            status: "working"
           }
         ]
       },
@@ -1234,14 +1234,14 @@ export const fileCategories: FileCategory[] = [
             description: "Convert to MP4, AVI, etc.",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Compress",
             description: "Reduce file size",
             isOffline: true,
             icon: "compress",
-            status: "maintenance"
+            status: "working"
           }
         ]
       }

@@ -140,9 +140,9 @@ export async function adjustBrightness(file: File, brightness: number): Promise<
       const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
       if (imageData) {
         for (let i = 0; i < imageData.data.length; i += 4) {
-          imageData.data[i] += brightness;
-          imageData.data[i + 1] += brightness;
-          imageData.data[i + 2] += brightness;
+          imageData.data[i] = Math.min(255, Math.max(0, imageData.data[i] + brightness));
+          imageData.data[i + 1] = Math.min(255, Math.max(0, imageData.data[i + 1] + brightness));
+          imageData.data[i + 2] = Math.min(255, Math.max(0, imageData.data[i + 2] + brightness));
         }
         ctx?.putImageData(imageData, 0, 0);
       }
@@ -155,4 +155,61 @@ export async function adjustBrightness(file: File, brightness: number): Promise<
     img.onerror = () => reject(new Error('Failed to load image'));
     img.src = URL.createObjectURL(file);
   });
+}
+
+export async function applyFilter(file: File, filter: string): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      if (ctx) {
+        ctx.filter = filter;
+        ctx.drawImage(img, 0, 0);
+      }
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error('Failed to apply filter'));
+      }, file.type);
+    };
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+export async function addWatermark(file: File, text: string): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx?.drawImage(img, 0, 0);
+      if (ctx) {
+        ctx.font = '30px Arial';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.textAlign = 'center';
+        ctx.fillText(text, canvas.width / 2, canvas.height - 50);
+      }
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error('Failed to add watermark'));
+      }, file.type);
+    };
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+export async function blurImage(file: File, amount: number): Promise<Blob> {
+  return applyFilter(file, `blur(${amount}px)`);
+}
+
+export async function sharpenImage(file: File): Promise<Blob> {
+  return applyFilter(file, 'contrast(1.2) brightness(1.1)');
 }

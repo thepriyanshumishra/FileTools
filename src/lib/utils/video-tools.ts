@@ -90,3 +90,66 @@ export async function rotateVideo(file: File, degrees: number): Promise<Blob> {
   const data = await ffmpeg.readFile(outputName);
   return new Blob([data as BlobPart], { type: 'video/mp4' });
 }
+
+export async function mergeVideos(files: File[]): Promise<Blob> {
+  const ffmpeg = await loadFFmpeg();
+  const listContent = files.map((_, i) => `file 'input${i}.mp4'`).join('\n');
+  
+  for (let i = 0; i < files.length; i++) {
+    await ffmpeg.writeFile(`input${i}.mp4`, await fetchFile(files[i]));
+  }
+  await ffmpeg.writeFile('list.txt', new TextEncoder().encode(listContent));
+  
+  await ffmpeg.exec(['-f', 'concat', '-safe', '0', '-i', 'list.txt', '-c', 'copy', 'output.mp4']);
+  
+  const data = await ffmpeg.readFile('output.mp4');
+  return new Blob([data as BlobPart], { type: 'video/mp4' });
+}
+
+export async function removeAudio(file: File): Promise<Blob> {
+  const ffmpeg = await loadFFmpeg();
+  const inputName = 'input.' + file.name.split('.').pop();
+  const outputName = 'output.mp4';
+  
+  await ffmpeg.writeFile(inputName, await fetchFile(file));
+  await ffmpeg.exec(['-i', inputName, '-an', '-c:v', 'copy', outputName]);
+  
+  const data = await ffmpeg.readFile(outputName);
+  return new Blob([data as BlobPart], { type: 'video/mp4' });
+}
+
+export async function cropVideo(file: File, width: number, height: number, x: number, y: number): Promise<Blob> {
+  const ffmpeg = await loadFFmpeg();
+  const inputName = 'input.' + file.name.split('.').pop();
+  const outputName = 'output.mp4';
+  
+  await ffmpeg.writeFile(inputName, await fetchFile(file));
+  await ffmpeg.exec(['-i', inputName, '-vf', `crop=${width}:${height}:${x}:${y}`, outputName]);
+  
+  const data = await ffmpeg.readFile(outputName);
+  return new Blob([data as BlobPart], { type: 'video/mp4' });
+}
+
+export async function changeVideoSpeed(file: File, speed: number): Promise<Blob> {
+  const ffmpeg = await loadFFmpeg();
+  const inputName = 'input.' + file.name.split('.').pop();
+  const outputName = 'output.mp4';
+  
+  await ffmpeg.writeFile(inputName, await fetchFile(file));
+  await ffmpeg.exec(['-i', inputName, '-filter:v', `setpts=${1/speed}*PTS`, outputName]);
+  
+  const data = await ffmpeg.readFile(outputName);
+  return new Blob([data as BlobPart], { type: 'video/mp4' });
+}
+
+export async function reverseVideo(file: File): Promise<Blob> {
+  const ffmpeg = await loadFFmpeg();
+  const inputName = 'input.' + file.name.split('.').pop();
+  const outputName = 'output.mp4';
+  
+  await ffmpeg.writeFile(inputName, await fetchFile(file));
+  await ffmpeg.exec(['-i', inputName, '-vf', 'reverse', '-af', 'areverse', outputName]);
+  
+  const data = await ffmpeg.readFile(outputName);
+  return new Blob([data as BlobPart], { type: 'video/mp4' });
+}

@@ -81,3 +81,24 @@ export async function getPDFInfo(file: File) {
     producer: pdf.getProducer(),
   };
 }
+
+export async function compressPDF(file: File): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  const pdfBytes = await pdf.save({ useObjectStreams: false });
+  return new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
+}
+
+export async function organizePDFPages(file: File, pageOrder: number[]): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  const newPdf = await PDFDocument.create();
+  
+  for (const pageIndex of pageOrder) {
+    const [page] = await newPdf.copyPages(pdf, [pageIndex]);
+    newPdf.addPage(page);
+  }
+  
+  const pdfBytes = await newPdf.save();
+  return new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
+}

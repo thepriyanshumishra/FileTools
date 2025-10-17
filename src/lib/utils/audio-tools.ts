@@ -92,3 +92,15 @@ export async function addFadeEffect(file: File, fadeIn: number, fadeOut: number)
   const data = await ffmpeg.readFile(outputName);
   return new Blob([data as BlobPart], { type: 'audio/mp3' });
 }
+
+export async function reverseAudio(file: File): Promise<Blob> {
+  const ffmpeg = await loadFFmpeg();
+  const inputName = 'input.' + file.name.split('.').pop();
+  const outputName = 'output.mp3';
+  
+  await ffmpeg.writeFile(inputName, await fetchFile(file));
+  await ffmpeg.exec(['-i', inputName, '-af', 'areverse', outputName]);
+  
+  const data = await ffmpeg.readFile(outputName);
+  return new Blob([data as BlobPart], { type: 'audio/mp3' });
+}
