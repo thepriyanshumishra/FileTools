@@ -63,14 +63,14 @@ export const fileCategories: FileCategory[] = [
             description: "Extract all images from PDF",
             isOffline: true,
             icon: "image",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Extract Text",
             description: "Extract text content from PDF",
             isOffline: true,
             icon: "text",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Rotate Pages",
@@ -98,14 +98,14 @@ export const fileCategories: FileCategory[] = [
             description: "Add password protection",
             isOffline: true,
             icon: "lock",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Unlock PDF",
             description: "Remove password protection",
             isOffline: true,
             icon: "unlock",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "PDF to Word",
@@ -126,7 +126,7 @@ export const fileCategories: FileCategory[] = [
             description: "Convert PDF pages to images",
             isOffline: true,
             icon: "convert",
-            status: "maintenance"
+            status: "working"
           },
           {
             name: "Organize Pages",

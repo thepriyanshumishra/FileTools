@@ -97,6 +97,28 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   if (toolName === 'Organize Pages') {
     return await pdfTools.organizePDFPages(file, (params.pageOrder as number[]) || [0, 1, 2]);
   }
+  if (toolName === 'Extract Images') {
+    const images = await pdfTools.extractImagesFromPDF(file);
+    if (images.length === 0) throw new Error('No images found or extraction not supported');
+    return images.length === 1 ? images[0] : await archiveTools.createZIP(images.map((b, i) => new File([b], `image${i}.png`)));
+  }
+  if (toolName === 'Extract Text') {
+    return await pdfTools.extractTextFromPDF(file);
+  }
+  if (toolName === 'Add Watermark' && file.type === 'application/pdf') {
+    return await pdfTools.addWatermarkToPDF(file, (params.text as string) || 'WATERMARK');
+  }
+  if (toolName === 'Protect PDF') {
+    return await pdfTools.protectPDF(file, (params.password as string) || 'password');
+  }
+  if (toolName === 'Unlock PDF') {
+    return await pdfTools.unlockPDF(file, (params.password as string) || '');
+  }
+  if (toolName === 'PDF to JPG') {
+    const images = await pdfTools.pdfToImages(file);
+    if (images.length === 0) throw new Error('Conversion not supported');
+    return images.length === 1 ? images[0] : await archiveTools.createZIP(images.map((b, i) => new File([b], `page${i}.jpg`)));
+  }
 
   // Video Tools
   if (toolName === 'Compress Video') {
