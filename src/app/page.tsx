@@ -1,103 +1,155 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { motion } from "framer-motion";
+import { fileCategories } from "@/lib/utils/file-types";
+import Link from "next/link";
+import { DocumentArrowUpIcon } from "@heroicons/react/24/outline";
+
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-center text-4xl font-bold">FileTools</h1>
+      <p className="mb-12 text-center text-lg text-zinc-600 dark:text-zinc-400">
+        Your one-stop solution for all file processing needs
+      </p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Convert Files Card - Always First */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-12"
+      >
+        <Link
+          href="/convert"
+          className="group mx-auto block max-w-2xl rounded-xl p-[2px] transition-all duration-300 hover:scale-[1.02] relative
+            before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-blue-500 before:to-purple-600 before:transition-all before:duration-300
+            after:absolute after:inset-[2px] after:rounded-lg after:bg-gradient-to-br after:from-background after:to-background after:transition-all after:duration-300
+            hover:before:opacity-90 hover:shadow-lg hover:shadow-blue-500/25 dark:hover:shadow-purple-500/25"
+        >
+          <div className="glass relative z-10 flex items-center gap-4 rounded-lg p-4">
+            <DocumentArrowUpIcon className="h-8 w-8 text-purple-500" />
+            <div>
+              <h2 className="text-xl font-semibold">Convert Files</h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Convert any file to another format quickly and easily
+              </p>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+
+      {/* Categories */}
+      <div className="space-y-12">
+        {fileCategories.map((category, index) => (
+          <section key={category.name} className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="file-category-title">{category.name}</h2>
+              <span className="badge rounded-full px-3 py-1 text-sm">
+                {category.types.length} File Types
+              </span>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              {category.description}
+            </p>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {category.types.map((type) => (
+                <motion.div
+                  key={type.extension}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="h-full"
+                >
+                  <Link
+                    href={`/tools/${type.extension}`}
+                    className="glass hover-card group block rounded-2xl p-6 transition-all h-full flex flex-col relative overflow-hidden"
+                  >
+                    <div
+                      className={`absolute top-0 right-0 w-32 h-32 ${type.color} opacity-10 blur-3xl rounded-full -mr-16 -mt-16`}
+                    />
+                    <div className="relative z-10 flex-1 flex flex-col">
+                      <h3 className="file-type-title mb-2 text-xl font-bold">
+                        {type.name}{" "}
+                        <span className="text-sm font-normal text-muted-foreground">
+                          (.{type.extension})
+                        </span>
+                      </h3>
+                      <p className="file-type-description mb-4 flex-1">
+                        {type.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {type.tools.slice(0, 3).map((tool) => (
+                          <span
+                            key={tool.name}
+                            className="tool-tag rounded-full px-3 py-1 text-xs"
+                          >
+                            {tool.name}
+                          </span>
+                        ))}
+                        {type.tools.length > 3 && (
+                          <span className="tool-tag rounded-full px-3 py-1 text-xs font-semibold">
+                            +{type.tools.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      {/* Coming Soon Section */}
+      <section className="mt-16">
+        <h2 className="mb-8 text-center text-2xl font-semibold">Coming Soon</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              title: "AI-Powered Tools",
+              description:
+                "Enhance images, remove noise, and extract text with AI",
+              color: "bg-yellow-500",
+            },
+            {
+              title: "Cloud Sync",
+              description: "Sync with Google Drive and Dropbox",
+              color: "bg-blue-500",
+            },
+            {
+              title: "Mobile App",
+              description: "Process files on the go with our mobile app",
+              color: "bg-green-500",
+            },
+          ].map((feature) => (
+            <div
+              key={feature.title}
+              className="rounded-xl bg-white/50 p-6 opacity-50 dark:bg-zinc-800/30"
+            >
+              <div className="mb-4">
+                <span
+                  className={`inline-block rounded-lg ${feature.color} p-3`}
+                />
+              </div>
+              <h3 className="mb-2 text-lg font-medium">{feature.title}</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                {feature.description}
+              </p>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </section>
+
+      {/* Admin Button */}
+      <footer className="mt-16 text-center">
+        <Link
+          href="/admin"
+          className="text-sm text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          I&apos;m Admin
+        </Link>
       </footer>
-    </div>
+    </main>
   );
 }
