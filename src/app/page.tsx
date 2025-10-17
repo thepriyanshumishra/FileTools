@@ -62,35 +62,35 @@ export default function HomePage() {
           <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
           <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
         </div>
-        <div className="relative z-10 py-16 text-center backdrop-blur-sm">
+        <div className="relative z-10 py-8 md:py-16 text-center backdrop-blur-sm">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-4 py-2 text-sm font-medium">
-              <SparklesIcon className="h-4 w-4 text-purple-500" />
+            <div className="mb-3 md:mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium">
+              <SparklesIcon className="h-3 w-3 md:h-4 md:w-4 text-purple-500" />
               <span>Free Forever • No Sign Up Required</span>
             </div>
-            <h1 className="mb-6 text-5xl font-bold md:text-6xl lg:text-7xl">
+            <h1 className="mb-4 md:mb-6 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               Process Files
               <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"> Instantly</span>
             </h1>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400 md:text-xl">
+            <p className="mx-auto mb-6 md:mb-8 max-w-2xl text-base text-zinc-600 dark:text-zinc-400 md:text-lg lg:text-xl px-4">
               Convert, compress, and edit your files right in your browser. Fast, secure, and completely free.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 md:gap-4 px-4">
               <Link
                 href="#tools"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50 w-full sm:w-auto"
               >
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <RocketLaunchIcon className="h-5 w-5 relative z-10" />
+                <RocketLaunchIcon className="h-4 w-4 md:h-5 md:w-5 relative z-10" />
                 <span className="relative z-10">Get Started</span>
               </Link>
               <Link
                 href="#features"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-zinc-300 px-8 py-4 font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-zinc-300 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30 w-full sm:w-auto"
               >
                 Learn More
               </Link>
