@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useFavoritesStore } from "@/lib/store/favorites";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { 
-  DocumentArrowUpIcon, 
   BoltIcon, 
   ShieldCheckIcon, 
   CloudArrowUpIcon,
@@ -202,31 +201,6 @@ export default function HomePage() {
             Choose from our collection of powerful file processing tools
           </p>
         </div>
-
-        {/* Convert Files Card - Featured */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
-        >
-          <Link
-            href="/convert"
-            className="group mx-auto block max-w-2xl rounded-xl p-[2px] transition-all duration-300 hover:scale-[1.02] relative
-              before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-blue-500 before:to-purple-600 before:transition-all before:duration-300
-              after:absolute after:inset-[2px] after:rounded-lg after:bg-gradient-to-br after:from-background after:to-background after:transition-all after:duration-300
-              hover:before:opacity-90 hover:shadow-lg hover:shadow-blue-500/25 dark:hover:shadow-purple-500/25"
-          >
-            <div className="glass relative z-10 flex items-center gap-4 rounded-lg p-6">
-              <DocumentArrowUpIcon className="h-10 w-10 text-purple-500" />
-              <div>
-                <h3 className="text-2xl font-semibold">Universal File Converter</h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  Convert any file to another format quickly and easily
-                </p>
-              </div>
-            </div>
-          </Link>
-        </motion.div>
 
         {/* Categories */}
         <div className="space-y-12">

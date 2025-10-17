@@ -24,7 +24,6 @@ export function Footer() {
             <h3 className="mb-4 font-semibold">Tools</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/#tools" className="text-zinc-600 hover:text-purple-600 dark:text-zinc-400">All Tools</Link></li>
-              <li><Link href="/convert" className="text-zinc-600 hover:text-purple-600 dark:text-zinc-400">File Converter</Link></li>
               <li><Link href="/#features" className="text-zinc-600 hover:text-purple-600 dark:text-zinc-400">Features</Link></li>
             </ul>
           </div>
