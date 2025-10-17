@@ -1,7 +1,6 @@
 import { FileWithPreview } from "@/lib/store/conversion";
 import { validateFileSize, validateFileType, formatFileSize } from "./file-validation";
 import { getRecommendedMaxFileSize } from "./browser-detection";
-import { useAdminSettings } from "../store/admin-settings";
 
 type ConversionOptions = {
   outputFormat: string;

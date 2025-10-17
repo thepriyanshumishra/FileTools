@@ -12,7 +12,6 @@ import {
   ChartBarIcon, 
   WrenchScrewdriverIcon,
   DocumentTextIcon,
-  BellIcon,
   ShieldCheckIcon,
   ArrowPathIcon
 } from "@heroicons/react/24/outline";

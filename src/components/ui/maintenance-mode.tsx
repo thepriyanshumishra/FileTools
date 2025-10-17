@@ -26,7 +26,7 @@ export function MaintenanceMode() {
           </p>
         </div>
         <p className="text-sm text-zinc-500">
-          We'll be back soon. Thank you for your patience.
+          We&apos;ll be back soon. Thank you for your patience.
         </p>
       </div>
     </div>
