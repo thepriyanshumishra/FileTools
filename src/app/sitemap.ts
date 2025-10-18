@@ -13,6 +13,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
+  const blogPosts = [
+    'how-to-compress-pdf',
+    'convert-jpg-to-png',
+    'merge-pdf-files',
+    'resize-images-bulk',
+    'video-compression-guide',
+    'pdf-security-tips',
+  ].map(slug => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -20,6 +34,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     ...toolPages,
+    ...blogPosts,
   ];
 }

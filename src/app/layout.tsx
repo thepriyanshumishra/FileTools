@@ -112,6 +112,49 @@ export default function RootLayout({
             }),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: [
+                {
+                  '@type': 'Question',
+                  name: 'Is FileTools free to use?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Yes, FileTools is 100% free. All tools are available without any cost, registration, or subscription.',
+                  },
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Are my files secure?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Absolutely. All file processing happens in your browser. Files never leave your device, ensuring complete privacy and security.',
+                  },
+                },
+                {
+                  '@type': 'Question',
+                  name: 'What file formats are supported?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'FileTools supports 40+ file formats including PDF, JPG, PNG, MP4, MP3, DOCX, and many more. We offer 150+ tools for file conversion and processing.',
+                  },
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Do I need to install software?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'No installation required. FileTools works entirely in your web browser. You can also install it as a Progressive Web App (PWA) for offline access.',
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100`}
