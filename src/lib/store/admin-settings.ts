@@ -26,7 +26,7 @@ interface AdminSettings {
 
 const defaultSettings = {
   maintenanceMode: false,
-  maintenanceMessage: 'Site is under maintenance. Please check back later.',
+  maintenanceMessage: "We're currently performing scheduled maintenance. We'll be back soon!",
   maxFileSize: 500,
   enabledTools: {},
   featuredTools: [],
@@ -65,7 +65,20 @@ export const useAdminSettings = create<AdminSettings>()(
           }
         });
       },
-      setMaintenanceMessage: (message) => set({ maintenanceMessage: message }),
+      setMaintenanceMessage: (message) => {
+        set({ maintenanceMessage: message });
+        fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ maintenanceMessage: message }),
+        }).then(res => {
+          if (res.status === 429) {
+            res.json().then(data => {
+              window.dispatchEvent(new CustomEvent('ratelimit', { detail: data }));
+            });
+          }
+        });
+      },
       setMaxFileSize: (size) => {
         set({ maxFileSize: size });
         fetch('/api/admin/settings', {

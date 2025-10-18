@@ -12,6 +12,10 @@ import { ShortcutsModal } from "@/components/ui/shortcuts-modal";
 import { SettingsPanel } from "@/components/ui/settings-panel";
 import { PWAInstall } from "@/components/pwa-install";
 import { RateLimitWarning } from "@/components/ui/rate-limit-warning";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { QuickActions } from "@/components/ui/quick-actions";
+import { ProgressBar } from "@/components/ui/progress-bar";
+// import { AnimatedBackground } from "@/components/ui/animated-background"; // Optional: Uncomment for particle animation
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -160,7 +164,13 @@ export default function RootLayout({
         className={`${inter.className} min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100`}
       >
         <div className="fixed inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none dark:opacity-[0.03]" />
+        <div className="fixed inset-0 pointer-events-none opacity-30 dark:opacity-20">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+        </div>
+        {/* <AnimatedBackground /> */} {/* Optional: Uncomment for particle animation */}
         <Providers>
+          <ProgressBar />
           <MaintenanceMode />
           <Header />
           <BrowserWarning />
@@ -172,6 +182,8 @@ export default function RootLayout({
           <ShortcutsModal />
           <PWAInstall />
           <RateLimitWarning />
+          <ScrollToTop />
+          <QuickActions />
           <SpeedInsights />
           <Analytics />
         </Providers>

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { DocumentTextIcon, MagnifyingGlassIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { SearchModal } from "@/components/ui/search-modal";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LogoIcon } from "@/components/ui/logo-icon";
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -35,10 +36,10 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 bg-white/90 backdrop-blur-xl dark:border-zinc-800/50 dark:bg-zinc-900/90 shadow-sm">
       <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 sm:gap-2.5 font-bold text-lg sm:text-xl group">
-          <div className="rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-2 sm:p-2.5 shadow-lg group-hover:shadow-purple-500/50 transition-shadow">
-            <DocumentTextIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+          <div className="rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-2 sm:p-2.5 shadow-lg group-hover:shadow-purple-500/50 group-hover:scale-110 transition-all duration-300">
+            <LogoIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
           </div>
-          <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent group-hover:from-purple-600 group-hover:to-blue-500 transition-all duration-300">
             FileTools
           </span>
         </Link>

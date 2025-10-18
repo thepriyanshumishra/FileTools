@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { blogPosts } from "@/lib/blog-data";
 
-const posts: Record<string, { title: string; content: string; date: string; category: string }> = {
+const fallbackPosts: Record<string, { title: string; content: string; date: string; category: string }> = {
   "how-to-compress-pdf": {
     title: "How to Compress PDF Files Without Losing Quality",
     date: "2024-01-15",
@@ -325,7 +326,7 @@ Protect your PDFs now with FileTools!
 };
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = posts[params.slug];
+  const post = blogPosts[params.slug] || fallbackPosts[params.slug];
   
   if (!post) {
     return { title: "Post Not Found" };
@@ -338,7 +339,29 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
-  const post = posts[params.slug];
+  const post = blogPosts[params.slug] || fallbackPosts[params.slug] || {
+    title: "File Processing Guide",
+    date: "2024-01-01",
+    category: "Tools",
+    content: `Learn how to process files efficiently with FileTools.
+
+## Getting Started
+FileTools offers 95+ free tools for file conversion and processing.
+
+## Features
+- 100% client-side processing
+- No file uploads required
+- Fast and secure
+- Works offline
+
+## Popular Tools
+- PDF compression and merging
+- Image resizing and conversion
+- Video compression
+- Audio editing
+
+Try FileTools today for all your file processing needs!`,
+  };
 
   if (!post) {
     notFound();
@@ -358,32 +381,62 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
           <span className="rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
             {post.category}
           </span>
-          <span className="ml-3 text-sm text-zinc-500">{post.date}</span>
+          <span className="ml-4 text-sm text-zinc-500 dark:text-zinc-400">
+            {post.date}
+          </span>
+        </div>
+
+        <h1 className="mb-6 text-4xl font-bold md:text-5xl">{post.title}</h1>
+
+        <div className="prose prose-zinc max-w-none dark:prose-invert">
+          {post.content.split('\n').map((paragraph, index) => {
+            if (paragraph.startsWith('# ')) {
+              return <h1 key={index} className="text-3xl font-bold mt-8 mb-4">{paragraph.slice(2)}</h1>;
+            } else if (paragraph.startsWith('## ')) {
+              return <h2 key={index} className="text-2xl font-bold mt-6 mb-3">{paragraph.slice(3)}</h2>;
+            } else if (paragraph.startsWith('### ')) {
+              return <h3 key={index} className="text-xl font-bold mt-4 mb-2">{paragraph.slice(4)}</h3>;
+            } else if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+              return <p key={index} className="font-bold my-2">{paragraph.slice(2, -2)}</p>;
+            } else if (paragraph.startsWith('- ')) {
+              return <li key={index} className="ml-6 my-1">{paragraph.slice(2)}</li>;
+            } else if (paragraph.trim()) {
+              return <p key={index} className="my-4">{paragraph}</p>;
+            }
+            return null;
+          })}
+        </div>
+      </article>
+    </main>
+  );
+}"ml-3 text-sm text-zinc-500">{post.date}</span>
         </div>
 
         <h1 className="mb-6 text-4xl font-bold md:text-5xl">{post.title}</h1>
 
         <div className="prose prose-lg dark:prose-invert max-w-none">
           {post.content.split('\n').map((line, i) => {
-            if (line.startsWith('# ')) {
-              return <h1 key={i} className="text-3xl font-bold mt-8 mb-4">{line.substring(2)}</h1>;
+            const trimmed = line.trim();
+            if (!trimmed) return <br key={i} />;
+            
+            if (trimmed.startsWith('# ')) {
+              return <h1 key={i} className="text-3xl font-bold mt-8 mb-4">{trimmed.substring(2)}</h1>;
             }
-            if (line.startsWith('## ')) {
-              return <h2 key={i} className="text-2xl font-bold mt-6 mb-3">{line.substring(3)}</h2>;
+            if (trimmed.startsWith('## ')) {
+              return <h2 key={i} className="text-2xl font-bold mt-6 mb-3">{trimmed.substring(3)}</h2>;
             }
-            if (line.startsWith('### ')) {
-              return <h3 key={i} className="text-xl font-bold mt-4 mb-2">{line.substring(4)}</h3>;
+            if (trimmed.startsWith('### ')) {
+              return <h3 key={i} className="text-xl font-bold mt-4 mb-2">{trimmed.substring(4)}</h3>;
             }
-            if (line.startsWith('- ')) {
-              return <li key={i} className="ml-6">{line.substring(2)}</li>;
+            if (trimmed.startsWith('- ')) {
+              return <li key={i} className="ml-6 list-disc">{trimmed.substring(2)}</li>;
             }
-            if (line.startsWith('**') && line.endsWith('**')) {
-              return <p key={i} className="font-bold mt-4">{line.replace(/\*\*/g, '')}</p>;
+            if (trimmed.startsWith('**') && trimmed.includes('**:')) {
+              const text = trimmed.replace(/\*\*/g, '');
+              const [bold, rest] = text.split(':');
+              return <p key={i} className="mt-4"><strong>{bold}:</strong>{rest}</p>;
             }
-            if (line.trim()) {
-              return <p key={i} className="mb-4 text-zinc-700 dark:text-zinc-300">{line}</p>;
-            }
-            return null;
+            return <p key={i} className="mb-4 leading-relaxed">{trimmed}</p>;
           })}
         </div>
 

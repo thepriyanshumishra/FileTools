@@ -64,63 +64,58 @@ export default function AdminDashboardPage() {
   }, [activeTab]);
 
   return (
-    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900">
-      {/* Top Nav Bar */}
-      <nav className="bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <ShieldCheckIcon className="h-4 w-4 text-white" />
-                </div>
-                <span className="font-bold text-lg">Admin</span>
+    <main className="min-h-screen bg-gradient-to-br from-zinc-50 via-purple-50/20 to-blue-50/20 dark:from-zinc-900 dark:via-purple-950/10 dark:to-blue-950/10">
+      {/* Header */}
+      <div className="glass border-b border-zinc-200/50 dark:border-zinc-800/50 sticky top-0 z-10 shadow-sm">
+        <div className="container mx-auto px-6 py-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <ShieldCheckIcon className="h-6 w-6 text-white" />
               </div>
-              
-              <div className="hidden md:flex items-center gap-1">
-                {[
-                  { id: 'overview', label: 'Overview', icon: ChartBarIcon },
-                  { id: 'analytics', label: 'Analytics', icon: ChartBarIcon },
-                  { id: 'tools', label: 'Tools', icon: WrenchScrewdriverIcon },
-                  { id: 'settings', label: 'Settings', icon: Cog6ToothIcon },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      activeTab === tab.id
-                        ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
-                        : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-                    }`}
-                  >
-                    <tab.icon className="h-4 w-4" />
-                    {tab.label}
-                  </button>
-                ))}
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  Admin Dashboard
+                </h1>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Manage your FileTools platform</p>
               </div>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                maintenanceMode 
-                  ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' 
-                  : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-              }`}>
-                {maintenanceMode ? '● Maintenance' : '● Live'}
-              </div>
-              <Link
-                href="/"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-sm font-medium transition-all"
-              >
-                <HomeIcon className="h-4 w-4" />
-                <span className="hidden sm:inline">Site</span>
-              </Link>
-            </div>
+            <Link
+              href="/"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 active:scale-95 transition-all"
+            >
+              <HomeIcon className="h-4 w-4" />
+              View Site
+            </Link>
           </div>
         </div>
-      </nav>
+      </div>
 
-      <div className="container mx-auto px-6 py-6">
+      <div className="container mx-auto px-6 py-8">
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+          {[
+            { id: 'overview', label: 'Overview', icon: ChartBarIcon },
+            { id: 'analytics', label: 'Analytics', icon: ChartBarIcon },
+            { id: 'tools', label: 'Tools', icon: WrenchScrewdriverIcon },
+            { id: 'settings', label: 'Settings', icon: Cog6ToothIcon },
+          ].map((tab) => (
+            <motion.button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all whitespace-nowrap ${
+                activeTab === tab.id
+                  ? 'glass shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                  : 'glass text-zinc-700 dark:text-zinc-300 hover:shadow-md'
+              }`}
+            >
+              <tab.icon className="h-5 w-5" />
+              {tab.label}
+            </motion.button>
+          ))}
+        </div>
 
         {/* Overview Tab */}
         {activeTab === 'overview' && (

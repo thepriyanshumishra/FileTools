@@ -20,7 +20,6 @@ interface FileWithPreview extends File {
 }
 import { processTool, downloadBlob } from "@/lib/utils/tool-processor";
 import { getToolInstructions } from "@/lib/utils/tool-instructions";
-import { ToastContainer } from "@/components/ui/toast";
 import { trackEvent } from "@/lib/utils/analytics";
 import { useFavoritesStore } from "@/lib/store/favorites";
 import { useHistoryStore } from "@/lib/store/history";
@@ -666,7 +665,27 @@ export default function FileTypeToolsPage({ params }: FileTypeToolsPageProps) {
         </motion.div>
       )}
       
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      {/* Toast notifications */}
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={`flex items-center gap-3 rounded-lg p-4 shadow-lg backdrop-blur-sm animate-slideInRight ${
+              toast.type === "success"
+                ? "bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-800"
+                : "bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/30 dark:text-red-200 dark:border-red-800"
+            }`}
+          >
+            <p className="flex-1 text-sm font-medium">{toast.message}</p>
+            <button
+              onClick={() => removeToast(toast.id)}
+              className="flex-shrink-0 rounded-lg p-1 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }

@@ -47,9 +47,9 @@
 - ✅ **History & Favorites** - Track recent tools and bookmarks
 
 ### 🔍 **SEO Optimized**
-- ✅ **50+ Pages Indexed** - Homepage, tools, blog
+- ✅ **80+ Pages Indexed** - Homepage, tools, blog
 - ✅ **Schema Markup** - WebApplication + FAQ structured data
-- ✅ **Blog** - 6 SEO-rich articles
+- ✅ **Blog** - 36 SEO-rich articles
 - ✅ **Sitemap** - Auto-generated for all pages
 - ✅ **Open Graph** - Social media previews
 
@@ -80,6 +80,15 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+### 🎉 What's New in v2.0?
+
+Check out the latest enhancements:
+- 🚀 [Quick Start Guide](docs/guides/QUICK_START.md) - Get started quickly
+- 📂 [File Structure](FILE_STRUCTURE.md) - Project organization
+- 🗺️ [Roadmap](docs/development/ROADMAP.md) - Development roadmap
+- 📖 [Improvements](docs/development/IMPROVEMENTS.md) - Detailed improvements
+- 📋 [Changes Summary](docs/development/CHANGES_SUMMARY.md) - Complete changelog
 
 ### Build for Production
 
@@ -271,10 +280,10 @@ Auto-deploys on every push to `main` branch.
 
 - **Total Tools:** 95+
 - **File Formats:** 40+
-- **Pages:** 50+
+- **Pages:** 80+
 - **Components:** 13
 - **API Routes:** 3
-- **Blog Posts:** 6
+- **Blog Posts:** 36
 
 ---
 

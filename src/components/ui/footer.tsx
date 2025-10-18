@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DocumentTextIcon } from "@heroicons/react/24/outline";
+import { LogoIcon } from "@/components/ui/logo-icon";
 
 export function Footer() {
   return (
@@ -7,9 +7,9 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link href="/" className="mb-4 flex items-center gap-2 font-bold text-xl">
-              <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2">
-                <DocumentTextIcon className="h-5 w-5 text-white" />
+            <Link href="/" className="mb-4 flex items-center gap-2 font-bold text-xl group">
+              <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2 group-hover:scale-110 transition-transform duration-300">
+                <LogoIcon className="h-5 w-5 text-white" />
               </div>
               <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
                 FileTools

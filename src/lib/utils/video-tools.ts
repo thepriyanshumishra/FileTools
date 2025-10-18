@@ -1,25 +1,13 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { fetchFile } from '@ffmpeg/util';
 import { shouldDisableFFmpeg } from './browser-detection';
-
-let ffmpeg: FFmpeg | null = null;
+import { loadFFmpegLazy } from './ffmpeg-loader';
 
 export async function loadFFmpeg(): Promise<FFmpeg> {
   if (shouldDisableFFmpeg()) {
     throw new Error('FFmpeg is disabled on this device. Please use a desktop browser for video/audio processing.');
   }
-  
-  if (ffmpeg) return ffmpeg;
-  
-  ffmpeg = new FFmpeg();
-  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd';
-  
-  await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-  });
-  
-  return ffmpeg;
+  return loadFFmpegLazy();
 }
 
 export async function convertVideoFormat(file: File, outputFormat: string): Promise<Blob> {

@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="100" fill="url(#grad1)"/>
+  
+  <!-- File icon -->
+  <path d="M320 96H160C146.745 96 136 106.745 136 120V392C136 405.255 146.745 416 160 416H352C365.255 416 376 405.255 376 392V152L320 96Z" fill="white" fill-opacity="0.3"/>
+  <path d="M320 96V152H376" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Arrow/tool symbol -->
+  <path d="M256 320V224M256 224L216 264M256 224L296 264" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Decorative dots -->
+  <circle cx="256" cy="224" r="8" fill="white">
+    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- File outline -->
+  <path d="M320 96H160C146.745 96 136 106.745 136 120V392C136 405.255 146.745 416 160 416H352C365.255 416 376 405.255 376 392V152L320 96Z" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

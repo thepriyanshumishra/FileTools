@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { fileCategories } from "@/lib/utils/file-types";
 import Link from "next/link";
 import { useFavoritesStore } from "@/lib/store/favorites";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { memo } from "react";
 import { 
   BoltIcon, 
   ShieldCheckIcon, 
@@ -13,8 +14,30 @@ import {
   RocketLaunchIcon
 } from "@heroicons/react/24/outline";
 
+const FeatureCard = memo(({ feature, index }: { feature: any; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.1 }}
+    className="glass rounded-2xl p-5 sm:p-8"
+  >
+    <div className="mb-3 sm:mb-4 inline-flex rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-2.5 sm:p-3">
+      <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
+    </div>
+    <h3 className="mb-1.5 sm:mb-2 text-lg sm:text-xl font-semibold break-words">{feature.title}</h3>
+    <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 break-words">
+      {feature.description}
+    </p>
+  </motion.div>
+));
+
+FeatureCard.displayName = 'FeatureCard';
+
 export default function HomePage() {
   const { favorites } = useFavoritesStore();
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 300], [0, 100]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   
   // Get favorite tools
   const favoriteTools = favorites.map(fav => {
@@ -53,7 +76,10 @@ export default function HomePage() {
   return (
     <main className="container mx-auto px-6 sm:px-4 py-8">
       {/* Hero Section */}
-      <section className="relative mb-20 overflow-hidden rounded-3xl">
+      <motion.section 
+        className="relative mb-20 overflow-hidden rounded-3xl"
+        style={{ y, opacity }}
+      >
         {/* Animated Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient" />
@@ -81,22 +107,22 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
               <Link
                 href="#tools"
-                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50"
+                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50 active:scale-95"
               >
                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <RocketLaunchIcon className="h-4 w-4 md:h-5 md:w-5 relative z-10" />
+                <RocketLaunchIcon className="h-4 w-4 md:h-5 md:w-5 relative z-10 group-hover:rotate-12 transition-transform" />
                 <span className="relative z-10">Get Started</span>
               </Link>
               <Link
                 href="#features"
-                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-zinc-300 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-zinc-300 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 hover:scale-105 active:scale-95 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30"
               >
                 Learn More
               </Link>
             </div>
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Stats Section */}
       <section className="mb-20">
@@ -130,21 +156,7 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
           {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="glass rounded-2xl p-5 sm:p-8"
-            >
-              <div className="mb-3 sm:mb-4 inline-flex rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-2.5 sm:p-3">
-                <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
-              </div>
-              <h3 className="mb-1.5 sm:mb-2 text-lg sm:text-xl font-semibold break-words">{feature.title}</h3>
-              <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 break-words">
-                {feature.description}
-              </p>
-            </motion.div>
+            <FeatureCard key={feature.title} feature={feature} index={index} />
           ))}
         </div>
       </section>
@@ -226,7 +238,7 @@ export default function HomePage() {
                 >
                   <Link
                     href={`/tools/${type.extension}`}
-                    className="glass hover-card group block rounded-2xl p-4 sm:p-6 transition-all h-full flex flex-col relative overflow-hidden"
+                    className="glass hover-card group block rounded-2xl p-4 sm:p-6 transition-all h-full flex flex-col relative overflow-hidden hover:-translate-y-1"
                   >
                     <div
                       className={`absolute top-0 right-0 w-32 h-32 ${type.color} opacity-10 blur-3xl rounded-full -mr-16 -mt-16`}
@@ -242,16 +254,17 @@ export default function HomePage() {
                         {type.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {type.tools.slice(0, 3).map((tool) => (
+                        {type.tools.slice(0, 3).map((tool, idx) => (
                           <span
                             key={tool.name}
-                            className="tool-tag rounded-full px-3 py-1 text-xs"
+                            className="tool-tag rounded-full px-3 py-1 text-xs transition-all hover:scale-105"
+                            style={{ animationDelay: `${idx * 50}ms` }}
                           >
                             {tool.name}
                           </span>
                         ))}
                         {type.tools.length > 3 && (
-                          <span className="tool-tag rounded-full px-3 py-1 text-xs font-semibold">
+                          <span className="tool-tag rounded-full px-3 py-1 text-xs font-semibold transition-all hover:scale-105">
                             +{type.tools.length - 3} more
                           </span>
                         )}
