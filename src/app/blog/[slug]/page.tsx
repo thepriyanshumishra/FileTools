@@ -409,48 +409,4 @@ Try FileTools today for all your file processing needs!`,
       </article>
     </main>
   );
-}"ml-3 text-sm text-zinc-500">{post.date}</span>
-        </div>
-
-        <h1 className="mb-6 text-4xl font-bold md:text-5xl">{post.title}</h1>
-
-        <div className="prose prose-lg dark:prose-invert max-w-none">
-          {post.content.split('\n').map((line, i) => {
-            const trimmed = line.trim();
-            if (!trimmed) return <br key={i} />;
-            
-            if (trimmed.startsWith('# ')) {
-              return <h1 key={i} className="text-3xl font-bold mt-8 mb-4">{trimmed.substring(2)}</h1>;
-            }
-            if (trimmed.startsWith('## ')) {
-              return <h2 key={i} className="text-2xl font-bold mt-6 mb-3">{trimmed.substring(3)}</h2>;
-            }
-            if (trimmed.startsWith('### ')) {
-              return <h3 key={i} className="text-xl font-bold mt-4 mb-2">{trimmed.substring(4)}</h3>;
-            }
-            if (trimmed.startsWith('- ')) {
-              return <li key={i} className="ml-6 list-disc">{trimmed.substring(2)}</li>;
-            }
-            if (trimmed.startsWith('**') && trimmed.includes('**:')) {
-              const text = trimmed.replace(/\*\*/g, '');
-              const [bold, rest] = text.split(':');
-              return <p key={i} className="mt-4"><strong>{bold}:</strong>{rest}</p>;
-            }
-            return <p key={i} className="mb-4 leading-relaxed">{trimmed}</p>;
-          })}
-        </div>
-
-        <div className="mt-12 rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 p-8 text-center text-white">
-          <h3 className="mb-4 text-2xl font-bold">Try FileTools Now</h3>
-          <p className="mb-6">Process your files instantly with our free online tools</p>
-          <Link
-            href="/"
-            className="inline-block rounded-lg bg-white px-6 py-3 font-semibold text-purple-600 hover:bg-zinc-100 transition-colors"
-          >
-            Get Started Free
-          </Link>
-        </div>
-      </article>
-    </main>
-  );
 }
