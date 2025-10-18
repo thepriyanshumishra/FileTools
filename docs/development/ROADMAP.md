@@ -25,13 +25,13 @@
 - [x] Implement streaming for large file processing
 - [x] Add Web Workers for heavy computations
 
-### 1.2 User Experience
-- [ ] Add processing progress indicators (0-100%)
-- [ ] Implement batch file processing (multiple files at once)
-- [ ] Add file preview before processing
-- [ ] Create undo/redo functionality
-- [ ] Add keyboard shortcuts panel (? key)
-- [ ] Implement drag-and-drop file queue
+### 1.2 User Experience ✅ COMPLETED
+- [x] Add processing progress indicators (0-100%)
+- [x] Implement batch file processing (multiple files at once)
+- [x] Add file preview before processing
+- [x] Create undo/redo functionality
+- [x] Add keyboard shortcuts panel (? key)
+- [x] Implement drag-and-drop file queue
 
 ### 1.3 Error Handling
 - [ ] Better error messages with solutions

@@ -7,8 +7,12 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 const shortcuts = [
   { key: "⌘/Ctrl + K", description: "Open search" },
   { key: "⌘/Ctrl + U", description: "Upload files" },
+  { key: "⌘/Ctrl + D", description: "Download result" },
+  { key: "⌘/Ctrl + Z", description: "Undo" },
+  { key: "⌘/Ctrl + Y", description: "Redo" },
   { key: "⌘/Ctrl + Enter", description: "Process files" },
   { key: "⌘/Ctrl + H", description: "Toggle history" },
+  { key: "Space", description: "Preview file" },
   { key: "Esc", description: "Close modals / Go back" },
   { key: "?", description: "Show shortcuts" },
   { key: "↑ ↓", description: "Navigate search results" },
