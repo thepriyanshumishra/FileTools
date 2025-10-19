@@ -25,6 +25,15 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  // Admin authentication check
+  const authHeader = request.headers.get('x-admin-auth');
+  if (authHeader !== 'authenticated') {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
   // Rate limit: 20 requests per hour for admin updates
   const identifier = getClientIdentifier(request);
   const { success, remaining, resetTime } = rateLimit(`admin:${identifier}`, 20);
@@ -38,8 +47,24 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
+    
+    // Validate input
+    if (typeof body !== 'object' || body === null) {
+      return NextResponse.json({ success: false, error: 'Invalid request body' }, { status: 400 });
+    }
+
+    // Sanitize and validate settings
+    const allowedKeys = ['maintenanceMode', 'maintenanceMessage', 'maxFileSize', 'enabledTools', 'siteTitle', 'siteDescription', 'enableAnalytics', 'enableNotifications'];
+    const sanitizedBody: any = {};
+    
+    for (const key of Object.keys(body)) {
+      if (allowedKeys.includes(key)) {
+        sanitizedBody[key] = body[key];
+      }
+    }
+
     const currentSettings = await kv.get(SETTINGS_KEY) || defaultSettings;
-    const updatedSettings = { ...currentSettings, ...body };
+    const updatedSettings = { ...currentSettings, ...sanitizedBody };
     await kv.set(SETTINGS_KEY, updatedSettings);
     return NextResponse.json({ success: true, settings: updatedSettings });
   } catch (error) {

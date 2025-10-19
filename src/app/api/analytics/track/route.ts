@@ -23,17 +23,32 @@ export async function POST(request: Request) {
 
   try {
     const event = await request.json();
+    
+    // Validate event data
+    if (!event || typeof event !== 'object') {
+      return NextResponse.json({ success: false, error: 'Invalid event data' }, { status: 400 });
+    }
+
+    // Sanitize event data
+    const sanitizedEvent = {
+      tool: String(event.tool || '').slice(0, 100),
+      action: String(event.action || '').slice(0, 50),
+      browser: String(event.browser || '').slice(0, 50),
+      device: String(event.device || '').slice(0, 50),
+      timestamp: Date.now()
+    };
+
     const date = new Date().toISOString().split('T')[0];
     
     // Store event
-    await kv.lpush(`analytics:events:${date}`, JSON.stringify(event));
+    await kv.lpush(`analytics:events:${date}`, JSON.stringify(sanitizedEvent));
     await kv.expire(`analytics:events:${date}`, 2592000); // 30 days
     
-    // Update counters
-    await kv.hincrby('analytics:tools', event.tool, 1);
-    await kv.hincrby('analytics:actions', event.action, 1);
-    if (event.browser) await kv.hincrby('analytics:browsers', event.browser, 1);
-    if (event.device) await kv.hincrby('analytics:devices', event.device, 1);
+    // Update counters with sanitized data
+    if (sanitizedEvent.tool) await kv.hincrby('analytics:tools', sanitizedEvent.tool, 1);
+    if (sanitizedEvent.action) await kv.hincrby('analytics:actions', sanitizedEvent.action, 1);
+    if (sanitizedEvent.browser) await kv.hincrby('analytics:browsers', sanitizedEvent.browser, 1);
+    if (sanitizedEvent.device) await kv.hincrby('analytics:devices', sanitizedEvent.device, 1);
     
     return NextResponse.json({ success: true });
   } catch (error) {

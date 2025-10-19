@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Admin authentication check
+  const authHeader = request.headers.get('x-admin-auth');
+  if (authHeader !== 'authenticated') {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
   try {
     const [tools, actions, browsers, devices] = await Promise.all([
       kv.hgetall('analytics:tools'),

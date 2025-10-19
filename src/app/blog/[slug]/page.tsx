@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogPosts } from "@/lib/blog-data";
+import { sanitizeText } from "@/lib/utils/sanitize";
 
 const fallbackPosts: Record<string, { title: string; content: string; date: string; category: string }> = {
   "how-to-compress-pdf": {
@@ -390,18 +391,19 @@ Try FileTools today for all your file processing needs!`,
 
         <div className="prose prose-zinc max-w-none dark:prose-invert">
           {post.content.split('\n').map((paragraph, index) => {
+            const sanitized = sanitizeText(paragraph);
             if (paragraph.startsWith('# ')) {
-              return <h1 key={index} className="text-3xl font-bold mt-8 mb-4">{paragraph.slice(2)}</h1>;
+              return <h1 key={index} className="text-3xl font-bold mt-8 mb-4" dangerouslySetInnerHTML={{ __html: sanitized.slice(2) }} />;
             } else if (paragraph.startsWith('## ')) {
-              return <h2 key={index} className="text-2xl font-bold mt-6 mb-3">{paragraph.slice(3)}</h2>;
+              return <h2 key={index} className="text-2xl font-bold mt-6 mb-3" dangerouslySetInnerHTML={{ __html: sanitized.slice(3) }} />;
             } else if (paragraph.startsWith('### ')) {
-              return <h3 key={index} className="text-xl font-bold mt-4 mb-2">{paragraph.slice(4)}</h3>;
+              return <h3 key={index} className="text-xl font-bold mt-4 mb-2" dangerouslySetInnerHTML={{ __html: sanitized.slice(4) }} />;
             } else if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
-              return <p key={index} className="font-bold my-2">{paragraph.slice(2, -2)}</p>;
+              return <p key={index} className="font-bold my-2" dangerouslySetInnerHTML={{ __html: sanitized.slice(2, -2) }} />;
             } else if (paragraph.startsWith('- ')) {
-              return <li key={index} className="ml-6 my-1">{paragraph.slice(2)}</li>;
+              return <li key={index} className="ml-6 my-1" dangerouslySetInnerHTML={{ __html: sanitized.slice(2) }} />;
             } else if (paragraph.trim()) {
-              return <p key={index} className="my-4">{paragraph}</p>;
+              return <p key={index} className="my-4" dangerouslySetInnerHTML={{ __html: sanitized }} />;
             }
             return null;
           })}

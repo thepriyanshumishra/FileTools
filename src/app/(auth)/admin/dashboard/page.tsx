@@ -68,7 +68,11 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     if (activeTab === 'analytics' && isAuthenticated) {
-      fetch('/api/analytics/stats')
+      fetch('/api/analytics/stats', {
+        headers: {
+          'x-admin-auth': 'authenticated'
+        }
+      })
         .then(res => res.json())
         .then(data => setAnalyticsData(data))
         .catch(() => {});
