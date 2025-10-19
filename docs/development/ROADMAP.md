@@ -42,10 +42,10 @@
 
 ---
 
-## 🚀 Phase 2: Feature Expansion ✅ COMPLETED
+## 🚀 Phase 2: Feature Expansion (IN PROGRESS)
 **Priority: HIGH | Timeline: 6-8 weeks**
 
-### 2.1 New Tool Categories
+### 2.1 New Tool Categories ✅ COMPLETED
 - [x] **Code Tools** (6 tools) ✅
   - Code formatter (multi-language)
   - Minifier/Beautifier
@@ -54,7 +54,7 @@
   - Diff viewer
   - Regex tester
   
-- [x] **Advanced PDF Tools** (7 tools) ✅
+- [x] **Advanced PDF Tools** (13 tools) ✅
   - Add watermarks
   - Add page numbers
   - Extract pages
@@ -62,28 +62,39 @@
   - Remove pages
   - Duplicate pages
   - Get PDF metadata
+  - PDF comparison
+  - PDF redaction
+  - Add bookmarks
+  - PDF repair
+  - Fill PDF forms
+  - Extract tables
+
+- [x] **Image Enhancement Tools** (5 tools) ✅
+  - Auto enhance (client-side)
+  - Smart crop
+  - Simple upscale
+  - Background removal (simplified)
+  - OCR placeholder (simplified)
 
 - [ ] **AI Tools** (Deferred - requires external APIs)
-  - Background removal
-  - Image upscaling
-  - Auto enhancement
-  - Smart crop/resize
-  - OCR text extraction
+  - Advanced background removal (AI-powered)
+  - Advanced image upscaling (AI-powered)
+  - Advanced OCR (AI-powered)
 
-### 2.2 Collaboration Features ✅
-- [x] Shareable processing links
-- [x] QR code generation for file sharing
-- [x] Temporary file storage (24h)
-- [x] Processing templates/presets
-- [x] Export settings as JSON
-- [x] Import settings from JSON
+### 2.2 Collaboration Features
+- [ ] Shareable processing links
+- [ ] QR code generation for file sharing
+- [ ] Temporary file storage (24h)
+- [ ] Processing templates/presets
+- [ ] Export settings as JSON
+- [ ] Import settings from JSON
 
-### 2.3 Advanced Settings ✅
-- [x] Per-tool quality settings
-- [x] Custom output formats
-- [x] Batch processing rules
-- [x] Processing profiles (web, print, archive)
-- [x] Smart format suggestions
+### 2.3 Advanced Settings
+- [ ] Per-tool quality settings
+- [ ] Custom output formats
+- [ ] Batch processing rules
+- [ ] Processing profiles (web, print, archive)
+- [ ] Smart format suggestions
 
 ---
 

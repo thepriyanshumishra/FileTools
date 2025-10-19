@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ShieldCheckIcon, UserIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { LogoIcon } from "@/components/ui/logo-icon";
+import { setAdminSession } from "@/lib/utils/admin-auth";
 
 interface AdminCredentials {
   username: string;
@@ -34,6 +35,7 @@ export default function AdminLoginPage() {
       credentials.username === "thedarkpcm" &&
       credentials.password === "Priyanshu@2427"
     ) {
+      setAdminSession();
       router.push("/admin/dashboard");
     } else {
       setError("Invalid credentials. Please try again.");

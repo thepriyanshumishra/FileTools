@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fileCategories } from "@/lib/utils/file-types";
 import { useAdminSettings } from "@/lib/store/admin-settings";
 import { useHistoryStore } from "@/lib/store/history";
 import { useFavoritesStore } from "@/lib/store/favorites";
+import { isAdminAuthenticated, clearAdminSession } from "@/lib/utils/admin-auth";
 import Link from "next/link";
 import { 
   Cog6ToothIcon, 
@@ -19,10 +21,20 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'tools' | 'settings' | 'analytics'>('overview');
   const [analyticsData, setAnalyticsData] = useState<any>(null);
   const { history, clearHistory } = useHistoryStore();
   const { favorites } = useFavoritesStore();
+
+  useEffect(() => {
+    if (!isAdminAuthenticated()) {
+      router.push('/admin');
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [router]);
   
   const {
     maintenanceMode,
@@ -55,13 +67,26 @@ export default function AdminDashboardPage() {
   );
 
   useEffect(() => {
-    if (activeTab === 'analytics') {
+    if (activeTab === 'analytics' && isAuthenticated) {
       fetch('/api/analytics/stats')
         .then(res => res.json())
         .then(data => setAnalyticsData(data))
         .catch(() => {});
     }
-  }, [activeTab]);
+  }, [activeTab, isAuthenticated]);
+
+  const handleLogout = () => {
+    clearAdminSession();
+    router.push('/admin');
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900">
@@ -115,6 +140,13 @@ export default function AdminDashboardPage() {
                 <HomeIcon className="h-4 w-4" />
                 <span className="hidden sm:inline">Site</span>
               </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 text-sm font-medium transition-all"
+              >
+                <span className="hidden sm:inline">Logout</span>
+                <span className="sm:hidden">🚪</span>
+              </button>
             </div>
           </div>
         </div>
