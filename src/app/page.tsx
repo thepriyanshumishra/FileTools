@@ -189,28 +189,28 @@ export default function HomePage() {
               title: "DocFlow",
               description: "Unified PDF Studio. Visually drag and reorder page grids, delete or rotate pages, and place hand-drawn e-signatures.",
               icon: DocumentTextIcon,
-              badge: "Studio",
+              badge: "Active",
               color: "border-blue-500/20 shadow-blue-500/5",
               iconColor: "text-blue-600 dark:text-blue-400 bg-blue-500/10",
-              href: "#"
+              href: "/tools/studio/pdf"
             },
             {
               title: "TimelineStudio",
               description: "Unified Video/Audio Timeline. Crop, trim intervals, adjust play speed, and volume using high-speed WASM FFmpeg.",
               icon: VideoCameraIcon,
-              badge: "Studio",
+              badge: "Active",
               color: "border-emerald-500/20 shadow-emerald-500/5",
               iconColor: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
-              href: "#"
+              href: "/tools/studio/video-audio"
             },
             {
               title: "CodeFormat",
               description: "Unified Document Editor. Format, lint, and convert JSON/XML code side-by-side or edit CSV databases in spreadsheets.",
               icon: FolderOpenIcon,
-              badge: "Studio",
+              badge: "Active",
               color: "border-indigo-500/20 shadow-indigo-500/5",
               iconColor: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10",
-              href: "#"
+              href: "/tools/studio/document"
             }
           ].map((studio, idx) => (
             <motion.div
