@@ -17,7 +17,8 @@ import {
   DocumentTextIcon,
   VideoCameraIcon,
   FolderOpenIcon,
-  StarIcon as StarIconOutline
+  StarIcon as StarIconOutline,
+  CheckIcon
 } from "@heroicons/react/24/outline";
 
 export default function HomePage() {
@@ -84,11 +85,6 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 dark:border-purple-400/30 px-4 py-2 text-xs md:text-sm font-semibold text-purple-700 dark:text-purple-300">
-            <SparklesIcon className="h-4 w-4 animate-spin-slow" />
-            <span>100% Secure • Client-Side Processing • Free Forever</span>
-          </div>
-
           <h1 className="mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight">
             Universal Files
             <span className="block bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 dark:from-purple-400 dark:via-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">
@@ -148,6 +144,24 @@ export default function HomePage() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Core Feature Checkmarks */}
+          <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-xs md:text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+            <div className="flex items-center gap-2">
+              <CheckIcon className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+              <span>Zero Server Uploads (100% Client-Side)</span>
+            </div>
+            <div className="hidden md:block text-zinc-300 dark:text-zinc-800">•</div>
+            <div className="flex items-center gap-2">
+              <CheckIcon className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+              <span>Full Offline Support (Installable PWA)</span>
+            </div>
+            <div className="hidden md:block text-zinc-300 dark:text-zinc-800">•</div>
+            <div className="flex items-center gap-2">
+              <CheckIcon className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+              <span>No Processing Limits or Account Required</span>
+            </div>
+          </div>
         </motion.div>
       </section>
 
