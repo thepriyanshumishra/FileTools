@@ -26,7 +26,7 @@ export function clearAdminSession() {
 
 export function isAdminAuthenticated(): boolean {
   if (typeof window !== 'undefined') {
-    return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    return sessionStorage.getItem(ADMIN_SESSION_KEY) !== null;
   }
   return false;
 }
