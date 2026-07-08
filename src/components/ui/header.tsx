@@ -55,7 +55,7 @@ export function Header() {
             <Link href="/#tools" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
               Tools
             </Link>
-            <Link href="/#features" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+            <Link href="/features" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
               Features
             </Link>
             <Link href="/admin" className="px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
@@ -107,7 +107,7 @@ export function Header() {
             <Link href="/#tools" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
               Tools
             </Link>
-            <Link href="/#features" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
+            <Link href="/features" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
               Features
             </Link>
             <Link href="/admin" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium rounded-lg transition-all hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30">
