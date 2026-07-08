@@ -13,14 +13,12 @@
 
 ## ✨ Features
 
-### 🎉 **NEW: Phase 1 Complete!**
-- ⚡ 40% faster page load, 36% smaller bundle
-- 📊 Real-time progress indicators (0-100%)
-- 📁 Batch file processing
-- 🔍 File preview before processing
-- ↩️ Undo/redo functionality
-- 🛡️ Comprehensive error handling
-- ⌨️ Enhanced keyboard shortcuts
+### 🎨 **NEW: v2.0 Flagship Studio Workspaces**
+- 📷 **PhotoSuite Image Studio (`/tools/studio/image`)** - Interactive canvas filters, adjustments (brightness, blur, saturation), drawing brush, annotations, and custom crop overlay.
+- 📄 **DocFlow PDF Studio (`/tools/studio/pdf`)** - Drag-and-drop page sorting grid, page rotations, exclusions, watermark overlays, password lock protection, and custom visual signature stamping.
+- 🎬 **TimelineStudio Video & Audio Editor (`/tools/studio/video-audio`)** - Double-handle range trim track, Web Audio API audio waveform renderer, volume/speed bounds, and client-side transcode compilation via FFmpeg WASM.
+- ⚡ **CodeFormat Document Studio (`/tools/studio/document`)** - Split source editor vs syntax-highlighted formatter (JSON, HTML, CSS, XML, MD) and custom spreadsheet grid cell editor for CSV files.
+- 📦 **Offline-First State Cache** - Debounced IndexedDB auto-saving mechanism that caches document file bytes and configuration sliders to restore work drafts dynamically.
 
 ### 🛠️ **95+ Working Tools**
 - **PDF Tools (14)** - Merge, Split, Compress, Rotate, Watermark, Extract, Protect

@@ -12,6 +12,16 @@ export function PWAInstall() {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
+
+      // Check if user dismissed prompt recently (last 14 days)
+      const dismissedAt = localStorage.getItem("pwa-install-prompt-dismissed");
+      if (dismissedAt) {
+        const parsed = parseInt(dismissedAt, 10);
+        if (!isNaN(parsed) && Date.now() - parsed < 14 * 24 * 60 * 60 * 1000) {
+          return;
+        }
+      }
+
       setShowPrompt(true);
     };
 
@@ -37,6 +47,11 @@ export function PWAInstall() {
     }
   };
 
+  const dismissPrompt = () => {
+    localStorage.setItem("pwa-install-prompt-dismissed", Date.now().toString());
+    setShowPrompt(false);
+  };
+
   return (
     <AnimatePresence>
       {showPrompt && (
@@ -58,7 +73,7 @@ export function PWAInstall() {
                 </p>
               </div>
               <button
-                onClick={() => setShowPrompt(false)}
+                onClick={dismissPrompt}
                 className="flex-shrink-0 rounded-lg p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               >
                 <XMarkIcon className="h-5 w-5" />
@@ -72,7 +87,7 @@ export function PWAInstall() {
                 Install
               </button>
               <button
-                onClick={() => setShowPrompt(false)}
+                onClick={dismissPrompt}
                 className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
               >
                 Not Now

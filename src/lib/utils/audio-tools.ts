@@ -13,13 +13,13 @@ export async function convertAudioFormat(file: File, outputFormat: string): Prom
   return new Blob([data as BlobPart], { type: `audio/${outputFormat}` });
 }
 
-export async function compressAudio(file: File): Promise<Blob> {
+export async function compressAudio(file: File, bitrate: string = '128k'): Promise<Blob> {
   const ffmpeg = await loadFFmpeg();
   const inputName = 'input.' + file.name.split('.').pop();
   const outputName = 'output.mp3';
   
   await ffmpeg.writeFile(inputName, await fetchFile(file));
-  await ffmpeg.exec(['-i', inputName, '-b:a', '128k', outputName]);
+  await ffmpeg.exec(['-i', inputName, '-b:a', bitrate, outputName]);
   
   const data = await ffmpeg.readFile(outputName);
   return new Blob([data as BlobPart], { type: 'audio/mp3' });

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ClockIcon, XMarkIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useHistoryStore } from "@/lib/store/history";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function HistoryPanel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -132,7 +133,10 @@ export function HistoryPanel() {
                           <XMarkIcon className="h-4 w-4 text-red-500" />
                         </button>
 
-                        <Link href={`/tools/${item.fileType}`}>
+                        <Link 
+                          href={item.toolName === "PhotoSuite" ? `/tools/studio/image?draftId=${item.id}` : `/tools/${item.fileType}?draftId=${item.id}`}
+                          onClick={() => setIsOpen(false)}
+                        >
                           <div className="mb-2 flex items-start justify-between pr-6">
                             <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
                               {item.fileName}
@@ -141,6 +145,14 @@ export function HistoryPanel() {
                           <div className="mb-2 flex items-center gap-2">
                             <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
                               {item.toolName}
+                            </span>
+                            <span className={cn(
+                              "rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider border",
+                              item.status === "draft"
+                                ? "bg-amber-500/10 text-amber-500 border-amber-500/20 animate-pulse"
+                                : "bg-green-500/10 text-green-500 border-green-500/20"
+                            )}>
+                              {item.status || "draft"}
                             </span>
                             <span className="text-xs text-zinc-500 dark:text-zinc-400">
                               .{item.fileType}

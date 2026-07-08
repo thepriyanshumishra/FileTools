@@ -7,7 +7,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 interface ToolOption {
   id: string;
   label: string;
-  type: "select" | "number" | "slider" | "toggle";
+  type: "select" | "number" | "slider" | "toggle" | "text";
   options?: string[];
   min?: number;
   max?: number;
@@ -94,6 +94,15 @@ export function ToolOptions({ toolName, options, values, onChange }: ToolOptions
                         step={option.step}
                         value={Number(values[option.id] ?? option.defaultValue)}
                         onChange={(e) => onChange(option.id, Number(e.target.value))}
+                        className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:border-zinc-700 dark:bg-zinc-800"
+                      />
+                    )}
+
+                    {option.type === "text" && (
+                      <input
+                        type="text"
+                        value={String(values[option.id] ?? option.defaultValue)}
+                        onChange={(e) => onChange(option.id, e.target.value)}
                         className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:border-zinc-700 dark:bg-zinc-800"
                       />
                     )}

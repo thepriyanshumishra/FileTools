@@ -1,7 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { LogoIcon } from "@/components/ui/logo-icon";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/tools/studio/")) {
+    return null;
+  }
   return (
     <footer className="border-t border-zinc-200/50 bg-white/50 backdrop-blur-sm dark:border-zinc-800/50 dark:bg-zinc-900/50">
       <div className="container mx-auto px-4 py-12">

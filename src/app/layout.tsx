@@ -84,6 +84,8 @@ export const metadata: Metadata = {
 
 // Note: Metadata is static, dynamic title/description would need middleware
 
+import { ClientLayoutWrapper } from "@/components/ui/client-layout-wrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -172,18 +174,21 @@ export default function RootLayout({
         <Providers>
           <ProgressBar />
           <MaintenanceMode />
-          <Header />
+          <ClientLayoutWrapper>
+            <Header />
+          </ClientLayoutWrapper>
           <BrowserWarning />
           <div className="min-h-screen">{children}</div>
-          <Footer />
+          <ClientLayoutWrapper>
+            <Footer />
+            <HistoryPanel />
+            <SettingsPanel />
+            <ShortcutsModal />
+            <ScrollToTop />
+          </ClientLayoutWrapper>
 
-          <HistoryPanel />
-          <SettingsPanel />
-          <ShortcutsModal />
           <PWAInstall />
           <RateLimitWarning />
-          <ScrollToTop />
-          <QuickActions />
           <SpeedInsights />
           <Analytics />
         </Providers>

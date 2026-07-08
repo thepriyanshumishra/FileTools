@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local editor/tool configs
+.vscode/
+.kiro/
+.qodo/
+
+# build-time generated files
+/public/pdf.worker.min.mjs

@@ -1,7 +1,7 @@
 interface ToolOption {
   id: string;
   label: string;
-  type: "select" | "number" | "slider" | "toggle";
+  type: "select" | "number" | "slider" | "toggle" | "text";
   options?: string[];
   min?: number;
   max?: number;
@@ -179,6 +179,95 @@ export const toolOptionsConfig: Record<string, ToolOption[]> = {
       type: "select",
       options: ["0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x"],
       defaultValue: "1x"
+    }
+  ],
+  "Format Text": [
+    {
+      id: "action",
+      label: "Text Operation",
+      type: "select",
+      options: ["uppercase", "lowercase", "trim", "reverse"],
+      defaultValue: "uppercase"
+    }
+  ],
+  "Convert Format": [
+    {
+      id: "format",
+      label: "Output Format",
+      type: "select",
+      options: ["JPEG", "PNG", "WebP"],
+      defaultValue: "PNG",
+      description: "Select target image format"
+    }
+  ],
+  "Add Watermark": [
+    {
+      id: "text",
+      label: "Watermark Text",
+      type: "text",
+      defaultValue: "CONFIDENTIAL",
+      description: "Text stamped diagonally on your file"
+    },
+    {
+      id: "opacity",
+      label: "Opacity (%)",
+      type: "slider",
+      min: 10,
+      max: 100,
+      step: 10,
+      defaultValue: 40
+    }
+  ],
+  "Convert to CSV": [
+    {
+      id: "delimiter",
+      label: "Delimiter Symbol",
+      type: "select",
+      options: ["Comma (,)", "Semicolon (;)", "Tab (\\t)"],
+      defaultValue: "Comma (,)"
+    }
+  ],
+  "Convert to JSON": [
+    {
+      id: "formatting",
+      label: "JSON Structure",
+      type: "select",
+      options: ["Minified (Single line)", "Beautified (Indented)"],
+      defaultValue: "Beautified (Indented)"
+    }
+  ],
+  "Validate CSV": [
+    {
+      id: "delimiter",
+      label: "CSV Delimiter",
+      type: "select",
+      options: ["Auto-detect", "Comma (,)", "Semicolon (;)", "Tab (\\t)"],
+      defaultValue: "Auto-detect"
+    }
+  ],
+  "Format JSON": [
+    {
+      id: "space",
+      label: "Tab Spacing size",
+      type: "select",
+      options: ["2 Spaces", "4 Spaces", "Tabs"],
+      defaultValue: "2 Spaces"
+    }
+  ],
+  "Convert to PDF": [
+    {
+      id: "orientation",
+      label: "Page Orientation",
+      type: "select",
+      options: ["Portrait", "Landscape"],
+      defaultValue: "Portrait"
+    },
+    {
+      id: "margins",
+      label: "Page Margins",
+      type: "select",
+      options: ["None", "Standard (1 inch)"],
+      defaultValue: "Standard (1 inch)"
     }
   ]
 };

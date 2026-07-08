@@ -1,44 +1,32 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { fileCategories } from "@/lib/utils/file-types";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useDropzone } from "react-dropzone";
 import Link from "next/link";
+import { fileCategories } from "@/lib/utils/file-types";
 import { useFavoritesStore } from "@/lib/store/favorites";
+import { useFileTransferStore } from "@/lib/store/file-transfer";
+import { cn } from "@/lib/utils";
 import { StarIcon } from "@heroicons/react/24/solid";
-import { memo } from "react";
 import { 
-  BoltIcon, 
-  ShieldCheckIcon, 
-  CloudArrowUpIcon,
   SparklesIcon,
-  RocketLaunchIcon
+  ArrowUpTrayIcon,
+  PhotoIcon,
+  DocumentTextIcon,
+  VideoCameraIcon,
+  FolderOpenIcon,
+  StarIcon as StarIconOutline
 } from "@heroicons/react/24/outline";
 
-const FeatureCard = memo(({ feature, index }: { feature: any; index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1 }}
-    className="glass rounded-2xl p-5 sm:p-8"
-  >
-    <div className="mb-3 sm:mb-4 inline-flex rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-2.5 sm:p-3">
-      <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-purple-500" />
-    </div>
-    <h3 className="mb-1.5 sm:mb-2 text-lg sm:text-xl font-semibold break-words">{feature.title}</h3>
-    <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 break-words">
-      {feature.description}
-    </p>
-  </motion.div>
-));
-
-FeatureCard.displayName = 'FeatureCard';
-
 export default function HomePage() {
+  const router = useRouter();
   const { favorites } = useFavoritesStore();
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 300], [0, 100]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  
+  const { setPendingFiles } = useFileTransferStore();
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   // Get favorite tools
   const favoriteTools = favorites.map(fav => {
     const [extension, toolName] = fav.split('-');
@@ -49,317 +37,398 @@ export default function HomePage() {
     return { extension, toolName, fileType, tool };
   }).filter(f => f.fileType && f.tool);
 
-  const stats = [
-    { label: "File Types", value: "44+" },
-    { label: "Tools Available", value: "150+" },
-    { label: "100% Free", value: "Always" },
-  ];
+  // File Dropzone Handler
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length === 0) return;
+    const file = acceptedFiles[0];
+    const ext = file.name.split('.').pop()?.toLowerCase() || "";
 
-  const features = [
-    {
-      icon: BoltIcon,
-      title: "Lightning Fast",
-      description: "Process files instantly in your browser",
-    },
-    {
-      icon: ShieldCheckIcon,
-      title: "100% Secure",
-      description: "Files never leave your device",
-    },
-    {
-      icon: CloudArrowUpIcon,
-      title: "No Upload Needed",
-      description: "Everything runs locally",
-    },
-  ];
+    // Check if extension is supported in our fileCategories database
+    const isSupported = fileCategories
+      .flatMap(cat => cat.types)
+      .some(t => t.extension === ext);
+
+    if (isSupported) {
+      setErrorMessage(null);
+      setPendingFiles([file]);
+      router.push(`/tools/${ext}`);
+    } else {
+      setErrorMessage(`Format ".${ext}" is not supported yet. Try PDF, PNG, MP3, MP4, etc.`);
+      setTimeout(() => setErrorMessage(null), 5000);
+    }
+  }, [router, setPendingFiles]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false
+  });
+
+  const categoriesList = ["All", ...fileCategories.map(c => c.name)];
+
+  const filteredTypes = fileCategories
+    .filter(cat => activeCategory === "All" || cat.name === activeCategory)
+    .flatMap(cat => cat.types);
 
   return (
-    <main className="container mx-auto px-6 sm:px-4 py-8">
-      {/* Hero Section */}
-      <motion.section 
-        className="relative mb-20 overflow-hidden rounded-3xl"
-        style={{ y, opacity }}
-      >
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient" />
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
-          <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
-        </div>
-        <div className="relative z-10 py-8 md:py-16 text-center backdrop-blur-sm">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="mb-3 md:mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium">
-              <SparklesIcon className="h-3 w-3 md:h-4 md:w-4 text-purple-500" />
-              <span>Free Forever • No Sign Up Required</span>
-            </div>
-            <h1 className="mb-4 md:mb-6 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-              Process Files
-              <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"> Instantly</span>
-            </h1>
-            <p className="mx-auto mb-6 md:mb-8 max-w-2xl text-base text-zinc-600 dark:text-zinc-400 md:text-lg lg:text-xl px-4">
-              Convert, compress, and edit your files right in your browser. Fast, secure, and completely free.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4">
-              <Link
-                href="#tools"
-                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50 active:scale-95"
-              >
-                <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <RocketLaunchIcon className="h-4 w-4 md:h-5 md:w-5 relative z-10 group-hover:rotate-12 transition-transform" />
-                <span className="relative z-10">Get Started</span>
-              </Link>
-              <Link
-                href="#features"
-                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-zinc-300 px-6 py-3 md:px-8 md:py-4 text-sm md:text-base font-semibold transition-all hover:border-purple-500 hover:bg-purple-50 hover:scale-105 active:scale-95 dark:border-zinc-700 dark:hover:border-purple-500 dark:hover:bg-purple-950/30"
-              >
-                Learn More
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
+    <main className="relative min-h-screen overflow-hidden bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      
+      {/* Radial Spotlights and Grid Background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-500/10 dark:bg-purple-500/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Stats Section */}
-      <section className="mb-20">
-        <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-3">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="glass rounded-2xl p-4 sm:p-6 text-center"
-            >
-              <div className="mb-1 sm:mb-2 text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent break-words">
-                {stat.value}
+      {/* Hero Section */}
+      <section className="relative max-w-5xl mx-auto text-center mb-16 md:mb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 dark:border-purple-400/30 px-4 py-2 text-xs md:text-sm font-semibold text-purple-700 dark:text-purple-300">
+            <SparklesIcon className="h-4 w-4 animate-spin-slow" />
+            <span>100% Secure • Client-Side Processing • Free Forever</span>
+          </div>
+
+          <h1 className="mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight">
+            Universal Files
+            <span className="block bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 dark:from-purple-400 dark:via-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              Processed Instantly
+            </span>
+          </h1>
+
+          <p className="mx-auto mb-10 max-w-2xl text-base sm:text-lg text-zinc-600 dark:text-zinc-400 md:text-xl leading-relaxed">
+            Convert, compress, and edit documents, images, audio, and videos right in your browser. Files never leave your device.
+          </p>
+        </motion.div>
+
+        {/* Interactive Quick Dropzone */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-2xl mx-auto"
+        >
+          <div
+            {...getRootProps()}
+            className={`glass relative border-2 border-dashed rounded-3xl p-8 md:p-12 text-center cursor-pointer transition-all duration-300 overflow-hidden ${
+              isDragActive
+                ? "border-purple-500 bg-purple-500/5 scale-105 shadow-2xl shadow-purple-500/10"
+                : "border-zinc-300 dark:border-zinc-800 hover:border-purple-500 dark:hover:border-purple-400 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20"
+            }`}
+          >
+            <input {...getInputProps()} />
+            
+            {/* Animated Glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-indigo-600/5 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+            <div className="relative z-10 space-y-4">
+              <div className="mx-auto w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-md">
+                <ArrowUpTrayIcon className={`h-8 w-8 ${isDragActive ? "animate-bounce" : ""}`} />
               </div>
-              <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 break-words">
-                {stat.label}
+              <div>
+                <p className="text-lg md:text-xl font-bold">
+                  {isDragActive ? "Drop your file here!" : "Drag & Drop any file to begin"}
+                </p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-sm mx-auto">
+                  Automatically detects format and opens the right tools instantly
+                </p>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {errorMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mt-3 text-sm font-semibold text-red-600 dark:text-red-400"
+              >
+                ⚠️ {errorMessage}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="mb-20">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Why Choose FileTools?</h2>
-          <p className="text-zinc-600 dark:text-zinc-400">
-            Everything you need to work with files, right in your browser
+      {/* Flagship Studios Presentation Section */}
+      <section className="max-w-6xl mx-auto mb-20 md:mb-28">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-extrabold sm:text-4xl">Flagship Unified Workspaces</h2>
+          <p className="text-zinc-500 dark:text-zinc-400 mt-2">
+            Why do things one by one? Use our unified creative studios to process everything in one workspace.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
-          {features.map((feature, index) => (
-            <FeatureCard key={feature.title} feature={feature} index={index} />
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: "PhotoSuite",
+              description: "Unified Image Studio. Crop, apply filters, adjust sliders, and draw annotations on a single visual canvas.",
+              icon: PhotoIcon,
+              badge: "Active",
+              color: "border-purple-500/20 shadow-purple-500/5",
+              iconColor: "text-purple-600 dark:text-purple-400 bg-purple-500/10",
+              href: "/tools/studio/image"
+            },
+            {
+              title: "DocFlow",
+              description: "Unified PDF Studio. Visually drag and reorder page grids, delete or rotate pages, and place hand-drawn e-signatures.",
+              icon: DocumentTextIcon,
+              badge: "Studio",
+              color: "border-blue-500/20 shadow-blue-500/5",
+              iconColor: "text-blue-600 dark:text-blue-400 bg-blue-500/10",
+              href: "#"
+            },
+            {
+              title: "TimelineStudio",
+              description: "Unified Video/Audio Timeline. Crop, trim intervals, adjust play speed, and volume using high-speed WASM FFmpeg.",
+              icon: VideoCameraIcon,
+              badge: "Studio",
+              color: "border-emerald-500/20 shadow-emerald-500/5",
+              iconColor: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
+              href: "#"
+            },
+            {
+              title: "CodeFormat",
+              description: "Unified Document Editor. Format, lint, and convert JSON/XML code side-by-side or edit CSV databases in spreadsheets.",
+              icon: FolderOpenIcon,
+              badge: "Studio",
+              color: "border-indigo-500/20 shadow-indigo-500/5",
+              iconColor: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10",
+              href: "#"
+            }
+          ].map((studio, idx) => (
+            <motion.div
+              key={studio.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              onClick={() => {
+                if (studio.href !== "#") {
+                  router.push(studio.href);
+                }
+              }}
+              className={cn(
+                "glass hover-card rounded-2xl p-6 border flex flex-col justify-between transition-all select-none",
+                studio.color,
+                studio.href !== "#" ? "cursor-pointer hover:border-purple-500/50 hover:shadow-purple-500/10" : "cursor-default"
+              )}
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className={`p-3 rounded-xl ${studio.iconColor}`}>
+                    <studio.icon className="h-6 w-6" />
+                  </div>
+                  <span className={cn(
+                    "text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full",
+                    studio.badge === "Active"
+                      ? "bg-green-500/10 text-green-400 border border-green-500/20 animate-pulse"
+                      : "bg-purple-500/10 text-purple-600 dark:text-purple-400"
+                  )}>
+                    {studio.badge}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">{studio.title}</h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
+                    {studio.description}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-900">
+                {studio.href !== "#" ? (
+                  <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:underline inline-flex items-center gap-1.5">
+                    Open Workspace →
+                  </span>
+                ) : (
+                  <span className="text-xs font-semibold text-zinc-400 inline-flex items-center gap-1.5 opacity-60">
+                    Coming in Studio Update →
+                  </span>
+                )}
+              </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* Favorites Section */}
       {favoriteTools.length > 0 && (
-        <section className="mb-20">
-          <div className="mb-8 flex items-center justify-between">
+        <section className="max-w-6xl mx-auto mb-16">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="mb-2 text-3xl font-bold md:text-4xl">Your Favorites</h2>
-              <p className="text-zinc-600 dark:text-zinc-400">
-                Quick access to your most used tools
-              </p>
+              <h2 className="text-2xl sm:text-3xl font-bold">Your Favorites</h2>
+              <p className="text-zinc-500 dark:text-zinc-400 text-sm">Quick shortcut access to your most used tools</p>
             </div>
-            <StarIcon className="h-8 w-8 text-yellow-500" />
+            <StarIcon className="h-8 w-8 text-yellow-500 animate-pulse" />
           </div>
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {favoriteTools.map(({ extension, toolName, fileType, tool }, index) => (
-              <motion.div
+            {favoriteTools.map(({ extension, toolName, fileType, tool }) => (
+              <Link
                 key={`${extension}-${toolName}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                href={`/tools/${extension}`}
+                className="glass hover-card group block rounded-2xl p-5 border border-zinc-200/60 dark:border-zinc-900/60 relative overflow-hidden"
               >
-                <Link
-                  href={`/tools/${extension}`}
-                  className="glass hover-card group block rounded-2xl p-4 sm:p-6 transition-all relative overflow-hidden"
-                >
-                  <div className={`absolute top-0 right-0 w-24 h-24 ${fileType?.color} opacity-10 blur-2xl rounded-full -mr-12 -mt-12`} />
-                  <div className="relative z-10">
-                    <div className="mb-3 flex items-center justify-between">
-                      <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                        {fileType?.name}
-                      </span>
-                      <StarIcon className="h-5 w-5 text-yellow-500" />
-                    </div>
-                    <h3 className="mb-2 text-xl font-bold">{toolName}</h3>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                <div className={`absolute top-0 right-0 w-20 h-20 ${fileType?.color} opacity-5 blur-2xl rounded-full`} />
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+                      {fileType?.name} (.{extension})
+                    </span>
+                    <StarIcon className="h-4.5 w-4.5 text-yellow-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold group-hover:text-purple-600 transition-colors">{toolName}</h3>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
                       {tool?.description}
                     </p>
                   </div>
-                </Link>
-              </motion.div>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
       )}
 
-      {/* Tools Section */}
-      <section id="tools" className="mb-20">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">All Tools</h2>
-          <p className="text-zinc-600 dark:text-zinc-400">
-            Choose from our collection of powerful file processing tools
+      {/* Main Interactive Tools Dashboard */}
+      <section id="tools" className="max-w-6xl mx-auto mb-20">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-extrabold sm:text-4xl">Interactive Tools Explorer</h2>
+          <p className="text-zinc-500 dark:text-zinc-400 mt-2">
+            Select a category to filter all working 100% offline-ready browser tools.
           </p>
         </div>
 
-        {/* Categories */}
-        <div className="space-y-12">
-        {fileCategories.map((category, index) => (
-          <section key={category.name} className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="file-category-title">{category.name}</h2>
-              <span className="badge rounded-full px-3 py-1 text-sm">
-                {category.types.length} File Types
-              </span>
-            </div>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              {category.description}
-            </p>
-            <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {category.types.map((type) => (
-                <motion.div
-                  key={type.extension}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="h-full"
+        {/* Dynamic Category Pill Tabs */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+          {categoriesList.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all ${
+                activeCategory === category
+                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-md scale-105"
+                  : "bg-zinc-100 hover:bg-zinc-200 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Dynamic Tool Cards Grid */}
+        <motion.div 
+          layout
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredTypes.map((type) => (
+              <motion.div
+                layout
+                key={type.extension}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
+                className="h-full"
+              >
+                <Link
+                  href={`/tools/${type.extension}`}
+                  className="glass hover-card group block rounded-3xl p-6 border border-zinc-200/50 dark:border-zinc-900/50 transition-all h-full flex flex-col justify-between relative overflow-hidden"
                 >
-                  <Link
-                    href={`/tools/${type.extension}`}
-                    className="glass hover-card group block rounded-2xl p-4 sm:p-6 transition-all h-full flex flex-col relative overflow-hidden hover:-translate-y-1"
-                  >
-                    <div
-                      className={`absolute top-0 right-0 w-32 h-32 ${type.color} opacity-10 blur-3xl rounded-full -mr-16 -mt-16`}
-                    />
-                    <div className="relative z-10 flex-1 flex flex-col">
-                      <h3 className="file-type-title mb-2 text-xl font-bold">
-                        {type.name}{" "}
-                        <span className="text-sm font-normal text-muted-foreground">
-                          (.{type.extension})
+                  {/* Decorative corner light drop */}
+                  <div className={`absolute top-0 right-0 w-32 h-32 ${type.color} opacity-5 blur-3xl rounded-full`} />
+
+                  <div className="relative z-10 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] tracking-widest font-extrabold uppercase bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2.5 py-1 rounded-full">
+                          .{type.extension}
                         </span>
+                        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-wider">
+                          {type.tools.length} Tools
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold group-hover:text-purple-600 transition-colors">
+                        {type.name} Tools
                       </h3>
-                      <p className="file-type-description mb-4 flex-1">
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
                         {type.description}
                       </p>
-                      <div className="flex flex-wrap gap-2">
-                        {type.tools.slice(0, 3).map((tool, idx) => (
+                    </div>
+
+                    <div className="mt-6">
+                      <div className="flex flex-wrap gap-1.5">
+                        {type.tools.slice(0, 3).map((tool) => (
                           <span
                             key={tool.name}
-                            className="tool-tag rounded-full px-3 py-1 text-xs transition-all hover:scale-105"
-                            style={{ animationDelay: `${idx * 50}ms` }}
+                            className="text-[10px] font-semibold bg-zinc-50 dark:bg-zinc-900/40 text-zinc-600 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800/80 px-2.5 py-1 rounded-md"
                           >
                             {tool.name}
                           </span>
                         ))}
                         {type.tools.length > 3 && (
-                          <span className="tool-tag rounded-full px-3 py-1 text-xs font-semibold transition-all hover:scale-105">
-                            +{type.tools.length - 3} more
+                          <span className="text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2 py-0.5 rounded-md">
+                            +{type.tools.length - 3} More
                           </span>
                         )}
                       </div>
                     </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        ))}
-        </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="mb-20">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Trusted by Users Worldwide</h2>
-          <p className="text-zinc-600 dark:text-zinc-400">
-            Join thousands who process files securely every day
+      {/* Testimonials */}
+      <section className="max-w-6xl mx-auto mb-12">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-extrabold">Trusted by Builders & Creators</h2>
+          <p className="text-zinc-500 dark:text-zinc-400 mt-2">
+            Loved for privacy, speed, and clean code.
           </p>
         </div>
-        <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {[
             {
               name: "Sarah Chen",
-              role: "Designer",
-              text: "Perfect for quick image conversions. No upload wait times!",
+              role: "Creative Designer",
+              text: "The client-side PDF converter is extremely fast. Processing everything right in my web browser is a game changer for privacy.",
               rating: 5,
             },
             {
               name: "Mike Johnson",
-              role: "Developer",
-              text: "Love that everything runs locally. Privacy-first approach.",
+              role: "Software Developer",
+              text: "I love that there are no remote server uploads. Highly secure, clean utility workspaces that work perfectly on my local machine.",
               rating: 5,
             },
             {
               name: "Emma Davis",
-              role: "Content Creator",
-              text: "Fast, free, and easy to use. My go-to tool for file processing.",
+              role: "Content Manager",
+              text: "The local video compressor handles high resolution recordings and exports with perfect quality. My primary daily helper site.",
               rating: 5,
             },
-          ].map((testimonial, index) => (
-            <motion.div
-              key={testimonial.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="glass rounded-2xl p-4 sm:p-6"
-            >
-              <div className="mb-4 flex gap-1">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="text-yellow-500">★</span>
-                ))}
-              </div>
-              <p className="mb-4 text-zinc-600 dark:text-zinc-400 break-words">&ldquo;{testimonial.text}&rdquo;</p>
-              <div>
-                <p className="font-semibold break-words">{testimonial.name}</p>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 break-words">{testimonial.role}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Coming Soon Section */}
-      <section className="mb-20">
-        <h2 className="mb-8 text-center text-2xl font-semibold">Coming Soon</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: "AI-Powered Tools",
-              description: "Enhance images, remove noise, and extract text with AI",
-              color: "bg-yellow-500",
-            },
-            {
-              title: "Cloud Sync",
-              description: "Sync with Google Drive and Dropbox",
-              color: "bg-blue-500",
-            },
-            {
-              title: "Mobile App",
-              description: "Process files on the go with our mobile app",
-              color: "bg-green-500",
-            },
-          ].map((feature) => (
+          ].map((testimonial) => (
             <div
-              key={feature.title}
-              className="rounded-xl bg-white/50 p-6 opacity-50 dark:bg-zinc-800/30"
+              key={testimonial.name}
+              className="glass rounded-2xl p-6 border border-zinc-200/50 dark:border-zinc-900/50 flex flex-col justify-between"
             >
-              <div className="mb-4">
-                <span className={`inline-block rounded-lg ${feature.color} p-3`} />
+              <div className="space-y-4">
+                <div className="flex gap-0.5">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <span key={i} className="text-yellow-500 text-sm">★</span>
+                  ))}
+                </div>
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm italic leading-relaxed">
+                  &ldquo;{testimonial.text}&rdquo;
+                </p>
               </div>
-              <h3 className="mb-2 text-lg font-medium break-words">{feature.title}</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 break-words">{feature.description}</p>
+              <div className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-900">
+                <p className="font-bold text-sm">{testimonial.name}</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">{testimonial.role}</p>
+              </div>
             </div>
           ))}
         </div>

@@ -42,7 +42,8 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
 
   // Image Tools
   if (toolName === 'Compress') {
-    return await imageTools.compressImage(file, (params.quality as number) || 0.8);
+    const quality = params.quality !== undefined ? (params.quality as number) / 100 : 0.8;
+    return await imageTools.compressImage(file, quality);
   }
   if (toolName === 'Resize') {
     return await imageTools.resizeImage(file, (params.width as number) || 800, (params.height as number) || 600);
@@ -51,7 +52,9 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
     return await imageTools.convertImageFormat(file, (params.format as string) || 'png');
   }
   if (toolName === 'Rotate') {
-    return await imageTools.rotateImage(file, (params.degrees as number) || 90);
+    const angleStr = (params.angle as string) || '90°';
+    const degrees = parseInt(angleStr.replace('°', '')) || 90;
+    return await imageTools.rotateImage(file, degrees);
   }
   if (toolName === 'Crop') {
     return await imageTools.cropImage(file, (params.x as number) || 0, (params.y as number) || 0, (params.width as number) || 500, (params.height as number) || 500);
@@ -131,7 +134,10 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
     return await videoTools.compressVideo(file);
   }
   if (toolName === 'Trim Video') {
-    return await videoTools.trimVideo(file, (params.startTime as number) || 0, (params.duration as number) || 10);
+    const start = (params.startTime as number) || 0;
+    const end = (params.endTime as number) || 10;
+    const duration = Math.max(0.1, end - start);
+    return await videoTools.trimVideo(file, start, duration);
   }
   if (toolName === 'Extract Audio') {
     return await videoTools.extractAudioFromVideo(file);
@@ -152,7 +158,9 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
     return await videoTools.cropVideo(file, (params.width as number) || 640, (params.height as number) || 480, (params.x as number) || 0, (params.y as number) || 0);
   }
   if (toolName === 'Change Speed' && file.type.startsWith('video/')) {
-    return await videoTools.changeVideoSpeed(file, (params.speed as number) || 1.5);
+    const speedStr = (params.speed as string) || '1x';
+    const speedNum = parseFloat(speedStr.replace('x', '')) || 1.0;
+    return await videoTools.changeVideoSpeed(file, speedNum);
   }
   if (toolName === 'Reverse Video') {
     return await videoTools.reverseVideo(file);
@@ -160,19 +168,26 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
 
   // Audio Tools
   if (toolName === 'Compress Audio') {
-    return await audioTools.compressAudio(file);
+    const bitrateVal = ((params.bitrate as string) || '192 kbps').replace(' kbps', 'k');
+    return await audioTools.compressAudio(file, bitrateVal);
   }
   if (toolName === 'Trim Audio') {
-    return await audioTools.trimAudio(file, (params.startTime as number) || 0, (params.duration as number) || 10);
+    const start = (params.startTime as number) || 0;
+    const end = (params.endTime as number) || 10;
+    const duration = Math.max(0.1, end - start);
+    return await audioTools.trimAudio(file, start, duration);
   }
   if (toolName === 'Merge Audio') {
     return await audioTools.mergeAudio(files);
   }
   if (toolName === 'Change Volume') {
-    return await audioTools.changeAudioVolume(file, (params.volume as number) || 1.5);
+    const vol = params.volume !== undefined ? (params.volume as number) / 100 : 1.0;
+    return await audioTools.changeAudioVolume(file, vol);
   }
   if (toolName === 'Change Speed') {
-    return await audioTools.changeAudioSpeed(file, (params.speed as number) || 1.5);
+    const speedStr = (params.speed as string) || '1x';
+    const speedNum = parseFloat(speedStr.replace('x', '')) || 1.0;
+    return await audioTools.changeAudioSpeed(file, speedNum);
   }
   if (toolName === 'Add Fade') {
     return await audioTools.addFadeEffect(file, (params.fadeIn as number) || 2, (params.fadeOut as number) || 2);
@@ -230,6 +245,51 @@ export async function processTool(options: ToolOptions): Promise<Blob | Blob[]> 
   }
   if (toolName === 'Minify' && file.name.endsWith('.js')) {
     return await documentTools.minifyJS(file);
+  }
+  if (toolName === 'Convert to PDF' && file.name.endsWith('.txt')) {
+    return await documentTools.textToPDF(file);
+  }
+  if (toolName === 'Format Text') {
+    return await documentTools.formatText(file, (params.action as string) || 'uppercase');
+  }
+  if (toolName === 'Validate CSV') {
+    const result = await documentTools.validateCSV(file);
+    if (!result.valid) throw new Error(result.error);
+    return new Blob(['Valid CSV'], { type: 'text/plain' });
+  }
+  if (toolName === 'Convert to HTML' && file.name.endsWith('.md')) {
+    const htmlText = documentTools.markdownToHTMLText(await file.text());
+    return new Blob([htmlText], { type: 'text/html' });
+  }
+  if (toolName === 'Convert to PDF' && file.name.endsWith('.md')) {
+    return await documentTools.markdownToPDF(file);
+  }
+  if (toolName === 'Preview' && file.name.endsWith('.md')) {
+    const htmlText = documentTools.markdownToHTMLText(await file.text());
+    return new Blob([htmlText], { type: 'text/html' });
+  }
+  if (toolName === 'Extract Slide Images' && file.name.endsWith('.pptx')) {
+    const images = await documentTools.extractImagesFromPPTX(file);
+    if (images.length === 0) throw new Error('No images found inside PowerPoint');
+    return images.length === 1 ? images[0] : await archiveTools.createZIP(images.map((b, i) => new File([b], `image_${i + 1}.png`)));
+  }
+  if (toolName === 'Extract Slide Text' && file.name.endsWith('.pptx')) {
+    return await documentTools.extractTextFromPPTX(file);
+  }
+  if (toolName === 'Extract Word Text' && file.name.endsWith('.docx')) {
+    return await documentTools.extractTextFromDOCX(file);
+  }
+  if (toolName === 'Convert to HTML' && file.name.endsWith('.docx')) {
+    return await documentTools.docxToHTML(file);
+  }
+  if (toolName === 'Convert to CSV' && file.name.endsWith('.xlsx')) {
+    return await documentTools.xlsxToCSV(file);
+  }
+  if (toolName === 'Excel to JSON' && file.name.endsWith('.xlsx')) {
+    return await documentTools.xlsxToJSON(file);
+  }
+  if (toolName === 'Preview Sheet' && file.name.endsWith('.xlsx')) {
+    return file;
   }
 
   // Archive Tools

@@ -6,8 +6,10 @@ import { MagnifyingGlassIcon, QuestionMarkCircleIcon, Bars3Icon, XMarkIcon } fro
 import { SearchModal } from "@/components/ui/search-modal";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LogoIcon } from "@/components/ui/logo-icon";
+import { usePathname } from "next/navigation";
 
 export function Header() {
+  const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,6 +32,10 @@ export function Header() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  if (pathname?.startsWith("/tools/studio/")) {
+    return null;
+  }
 
   return (
     <>

@@ -326,8 +326,11 @@ Protect your PDFs now with FileTools!
   },
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = blogPosts[params.slug] || fallbackPosts[params.slug];
+import { use } from "react";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = blogPosts[resolvedParams.slug] || fallbackPosts[resolvedParams.slug];
   
   if (!post) {
     return { title: "Post Not Found" };
@@ -339,8 +342,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
-  const post = blogPosts[params.slug] || fallbackPosts[params.slug] || {
+export default function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const post = blogPosts[slug] || fallbackPosts[slug] || {
     title: "File Processing Guide",
     date: "2024-01-01",
     category: "Tools",
