@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
@@ -24,6 +24,7 @@ const posts = [
 const categories = ["All", "PDF Tools", "Image Tools", "Video Tools", "Audio Tools"];
 
 export default function BlogPage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -98,7 +99,8 @@ export default function BlogPage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="glass hover-card border border-zinc-200/50 dark:border-zinc-800/50 rounded-3xl p-6 flex flex-col justify-between hover:shadow-lg transition-all"
+                onClick={() => router.push(`/blog/${post.slug}`)}
+                className="glass hover-card border border-zinc-200/50 dark:border-zinc-800/50 rounded-3xl p-6 flex flex-col justify-between hover:shadow-lg hover:border-purple-500/30 transition-all cursor-pointer group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -109,24 +111,16 @@ export default function BlogPage() {
                       {post.date}
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold mb-2 group">
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-                    >
-                      {post.title}
-                    </Link>
+                  <h2 className="text-xl font-bold mb-2 text-zinc-900 dark:text-zinc-50 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    {post.title}
                   </h2>
                   <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-3 mb-6 leading-relaxed">
                     {post.excerpt}
                   </p>
                 </div>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:underline inline-flex items-center gap-1"
-                >
+                <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 group-hover:underline inline-flex items-center gap-1">
                   Read full article →
-                </Link>
+                </span>
               </motion.article>
             ))}
           </div>
