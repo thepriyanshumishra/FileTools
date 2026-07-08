@@ -1,20 +1,27 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    <linearGradient id="grad-c" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#4FACFE" />
+    </linearGradient>
+    <linearGradient id="grad-p" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F355DA" />
+      <stop offset="100%" stop-color="#7000FF" />
     </linearGradient>
   </defs>
+
+  <rect width="32" height="32" rx="8" fill="#09090b" />
   
-  <!-- Rounded background -->
-  <rect width="32" height="32" rx="8" fill="url(#logo-grad)"/>
-  
-  <!-- File container shape -->
-  <path d="M20 7H12C11.4477 7 11 7.44772 11 8V24C11 24.5523 11.4477 25 12 25H20C20.5523 25 21 24.5523 21 24V10L18 7H20Z" fill="white" fill-opacity="0.2"/>
-  <path d="M18 7V10H21" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Downward arrow / process line symbol -->
-  <path d="M16 19V13M16 13L13.5 15.5M16 13L18.5 15.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <path d="M20 7H12C11.4477 7 11 7.44772 11 8V24C11 24.5523 11.4477 25 12 25H20C20.5523 25 21 24.5523 21 24V10L18 7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Left Page (Cyan) -->
+  <path d="M7 8h8l4 4v10c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V10c0-1.1.9-2 2-2Z" fill="url(#grad-c)" fill-opacity="0.8" />
+  <path d="M15 8v4h4L15 8Z" fill="#ffffff" fill-opacity="0.3" />
+
+  <!-- Right Page (Purple, offset & rotated) -->
+  <g transform="rotate(6 16 16) translate(2 1.5)">
+    <path d="M9 10h8l4 4v10c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V12c0-1.1.9-2 2-2Z" fill="url(#grad-p)" fill-opacity="0.9" />
+    <path d="M17 10v4h4L17 10Z" fill="#ffffff" fill-opacity="0.4" />
+  </g>
+
+  <!-- Arrow -->
+  <path d="M12 18h6M18 18l-3-3M18 18l-3 3" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
